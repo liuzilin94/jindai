@@ -47,13 +47,19 @@
 - 金色 #C9A962（点缀色）
 
 ### 字体
-- 主字体：-apple-system, "PingFang SC", "Helvetica Neue", sans-serif
+- 主字体：Noto Serif SC（思源宋体）
 
 ## 技术栈
 
 - uni-app（Vue3 + TypeScript）
 - 响应式布局（rpx单位）
 - Canvas API（手绘功能）
+
+## 在线预览
+
+**H5 演示地址**: https://liuzilin94.github.io/jindai/
+
+手机扫码或直接访问上方链接即可体验完整功能！
 
 ## 运行项目
 
