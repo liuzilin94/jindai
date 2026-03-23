@@ -1,0 +1,2882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>数字锦带 - 藏域非遗锦带定制</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #9E2B25;
+      --primary-dark: #7A1F1A;
+      --primary-light: #B8433D;
+      --secondary: #1D2B53;
+      --secondary-light: #2A3D6B;
+      --gold: #C9A962;
+      --gold-light: #E0C882;
+      --gold-dark: #A08040;
+      --bg: #F5F0E1;
+      --bg-light: #FAF7F0;
+      --bg-dark: #E8E0C8;
+      --text: #333333;
+      --text-light: #666666;
+      --text-muted: #999999;
+      --border: #D4C9B5;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Noto Serif SC', 'PingFang SC', serif;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.7;
+      background: var(--bg);
+      max-width: 430px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* 传统纹样背景 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 430px;
+      height: 100%;
+      background: 
+        radial-gradient(ellipse at top, rgba(201, 169, 98, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom, rgba(158, 43, 37, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 藏式边框装饰 */
+    .tibetan-border {
+      position: relative;
+    }
+
+    .tibetan-border::before,
+    .tibetan-border::after {
+      content: '༄༅། ་';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 4px;
+      opacity: 0.6;
+    }
+
+    .tibetan-border::before {
+      top: -8px;
+    }
+
+    .tibetan-border::after {
+      bottom: -8px;
+    }
+
+    /* 传统分隔线 */
+    .traditional-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 0;
+      gap: 15px;
+    }
+
+    .traditional-divider::before,
+    .traditional-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .divider-symbol {
+      font-size: 18px;
+      color: var(--gold);
+    }
+
+    /* 页面容器 */
+    .page {
+      display: none;
+      padding-bottom: 70px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* 底部导航 */
+    .tab-bar {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 430px;
+      height: 70px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-start;
+      padding-top: 8px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+      z-index: 100;
+      border-top: 2px solid var(--gold);
+    }
+
+    .tab-bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--gold), var(--secondary));
+    }
+
+    .tab-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 5px 15px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .tab-item::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+      transition: all 0.3s;
+    }
+
+    .tab-item.active {
+      color: var(--primary);
+    }
+
+    .tab-item.active::before {
+      transform: translateX(-50%) scale(1);
+    }
+
+    .tab-item .icon {
+      font-size: 24px;
+      margin-bottom: 2px;
+      filter: grayscale(0.3);
+      transition: all 0.3s;
+    }
+
+    .tab-item.active .icon {
+      filter: grayscale(0);
+      transform: scale(1.1);
+    }
+
+    .tab-item .text {
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    /* ========== 首页 ========== */
+    .home-header {
+      position: relative;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 50%, var(--secondary) 100%);
+      padding: 20px 20px 40px;
+      overflow: hidden;
+    }
+
+    .home-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px),
+        repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 40px);
+    }
+
+    .header-decoration {
+      position: absolute;
+      opacity: 0.15;
+    }
+
+    .header-decoration.top-left {
+      top: 10px;
+      left: 10px;
+      font-size: 60px;
+      color: var(--gold);
+    }
+
+    .header-decoration.top-right {
+      top: 10px;
+      right: 10px;
+      font-size: 60px;
+      color: var(--gold);
+      transform: scaleX(-1);
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 15px;
+    }
+
+    .logo {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #FFFFFF;
+      letter-spacing: 3px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .logo-subtitle {
+      font-size: 11px;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 2px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      height: 42px;
+      background: rgba(255,255,255,0.95);
+      border-radius: 21px;
+      padding: 0 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+
+    .search-box .icon {
+      color: var(--text-muted);
+      margin-right: 10px;
+      font-size: 16px;
+    }
+
+    .search-box .placeholder {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    /* 轮播区 */
+    .banner-section {
+      margin: -25px 15px 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .banner {
+      height: 180px;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 50%, #3A4D7B 100%);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(29, 43, 83, 0.3);
+      border: 3px solid var(--gold);
+    }
+
+    .banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(201, 169, 98, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(158, 43, 37, 0.2) 0%, transparent 40%);
+    }
+
+    .banner-pattern {
+      position: absolute;
+      font-size: 100px;
+      opacity: 0.08;
+      color: var(--gold);
+    }
+
+    .banner-pattern.left {
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .banner-pattern.right {
+      right: 10px;
+      bottom: 10px;
+      font-size: 80px;
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .banner-title {
+      font-size: 26px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 4px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .banner-subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+      letter-spacing: 2px;
+    }
+
+    /* 功能入口 */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 25px 20px;
+      margin: 15px 0;
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      border-radius: 20px;
+      margin: -10px 15px 0;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .menu-grid::before {
+      content: '༄༅། ་';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      color: var(--gold);
+      opacity: 0.5;
+      letter-spacing: 3px;
+    }
+
+    .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .menu-item:active {
+      transform: scale(0.95);
+    }
+
+    .menu-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 8px;
+      position: relative;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+
+    .menu-icon::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      z-index: -1;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+
+    .menu-item:hover .menu-icon::before {
+      opacity: 1;
+    }
+
+    .menu-name {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    /* 区块标题 */
+    .section {
+      padding: 15px 20px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-icon {
+      font-size: 20px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 2px;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      margin-top: 3px;
+    }
+
+    .section-more {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    /* 科普卡片 */
+    .tips-scroll {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .tip-card {
+      flex-shrink: 0;
+      width: 280px;
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--bg-light) 100%);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      align-items: flex-start;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border: 1px solid rgba(201, 169, 98, 0.2);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .tip-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .tip-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--primary), var(--gold));
+    }
+
+    .tip-icon {
+      width: 55px;
+      height: 55px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-right: 15px;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .tip-content {
+      flex: 1;
+    }
+
+    .tip-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+    }
+
+    .tip-desc {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* 商品卡片 */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .product-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border: 1px solid rgba(201, 169, 98, 0.15);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .product-image {
+      height: 150px;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(201, 169, 98, 0.05) 10px, rgba(201, 169, 98, 0.05) 20px);
+    }
+
+    .product-tag {
+      position: absolute;
+      left: 0;
+      top: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #FFFFFF;
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 0 12px 12px 0;
+      box-shadow: 0 2px 8px rgba(158, 43, 37, 0.3);
+      letter-spacing: 1px;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product-name {
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 8px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .product-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .product-price {
+      font-size: 18px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .product-price::before {
+      content: '¥';
+      font-size: 12px;
+    }
+
+    .product-sales {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ========== 定制中心 ========== */
+    .custom-header {
+      padding: 25px 20px 30px;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 50%, var(--secondary) 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .custom-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 10% 50%, rgba(201, 169, 98, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 90% 50%, rgba(158, 43, 37, 0.1) 0%, transparent 50%);
+    }
+
+    .custom-header .title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+      letter-spacing: 4px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .custom-header .subtitle {
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ornament {
+      position: absolute;
+      font-size: 40px;
+      opacity: 0.2;
+      color: var(--gold);
+    }
+
+    .ornament.left {
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .ornament.right {
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* 预览区 */
+    .preview-section {
+      padding: 20px;
+      margin: -15px 15px 0;
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      border-radius: 20px;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+      border: 2px solid var(--gold);
+    }
+
+    .preview-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .preview-title .text {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .preview-title .text::before {
+      content: '◆';
+      color: var(--gold);
+      font-size: 10px;
+    }
+
+    .preview-title .hint {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .preview-wrap {
+      background: var(--bg);
+      border-radius: 16px;
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px dashed var(--border);
+    }
+
+    .ribbon-preview {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ribbon-body {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      width: 200px;
+      transform: rotate(-90deg);
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+      padding: 6px;
+      border-radius: 8px;
+    }
+
+    .ribbon-cell {
+      width: 60px;
+      height: 60px;
+      background: var(--bg);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid var(--border);
+    }
+
+    .ribbon-cell:hover {
+      transform: scale(1.05);
+      box-shadow: 0 2px 10px rgba(158, 43, 37, 0.3);
+      border-color: var(--primary);
+    }
+
+    .ribbon-cell.filled {
+      border: none;
+    }
+
+    /* 九宫格编辑 */
+    .grid-editor {
+      margin: 20px;
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid rgba(201, 169, 98, 0.2);
+    }
+
+    .grid-editor-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .grid-editor-title .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 2px;
+    }
+
+    .clear-btn {
+      font-size: 12px;
+      color: var(--primary);
+      background: rgba(158, 43, 37, 0.1);
+      padding: 6px 14px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid rgba(158, 43, 37, 0.2);
+    }
+
+    .clear-btn:hover {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .grid-cells {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .grid-cell {
+      aspect-ratio: 1;
+      cursor: pointer;
+    }
+
+    .grid-cell-bg {
+      width: 100%;
+      height: 100%;
+      background: var(--bg);
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      transition: all 0.3s;
+    }
+
+    .grid-cell-bg:hover,
+    .grid-cell.active .grid-cell-bg {
+      border-color: var(--primary);
+      border-style: solid;
+      box-shadow: 0 0 15px rgba(158, 43, 37, 0.3);
+      background: rgba(158, 43, 37, 0.05);
+    }
+
+    /* 纹样选择 */
+    .pattern-section {
+      padding: 0 20px 20px;
+    }
+
+    .pattern-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .pattern-header .title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 2px;
+    }
+
+    .draw-btn {
+      font-size: 12px;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      padding: 8px 16px;
+      border-radius: 18px;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(158, 43, 37, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .draw-btn::before {
+      content: '✏️';
+      font-size: 14px;
+    }
+
+    .category-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .category-tab {
+      padding: 10px 20px;
+      font-size: 13px;
+      color: var(--text-light);
+      background: var(--bg);
+      border-radius: 20px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid var(--border);
+    }
+
+    .category-tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #FFFFFF;
+      border-color: transparent;
+      box-shadow: 0 3px 10px rgba(158, 43, 37, 0.3);
+    }
+
+    .pattern-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .pattern-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px 8px;
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid var(--border);
+    }
+
+    .pattern-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      border-color: var(--gold);
+    }
+
+    .pattern-item:active {
+      transform: scale(0.95);
+    }
+
+    .pattern-icon {
+      width: 55px;
+      height: 55px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .pattern-name {
+      font-size: 11px;
+      color: var(--text-light);
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    /* 规格选择 */
+    .spec-section {
+      padding: 0 20px 20px;
+    }
+
+    .spec-group {
+      margin-bottom: 20px;
+    }
+
+    .spec-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spec-label::before {
+      content: '◈';
+      color: var(--gold);
+    }
+
+    .spec-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .spec-option {
+      padding: 12px 18px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .spec-option:hover {
+      border-color: var(--primary);
+    }
+
+    .spec-option.active {
+      border-color: var(--primary);
+      background: rgba(158, 43, 37, 0.05);
+      color: var(--primary);
+      box-shadow: 0 0 10px rgba(158, 43, 37, 0.2);
+    }
+
+    .spec-price {
+      font-size: 10px;
+      color: var(--gold);
+      margin-top: 3px;
+    }
+
+    .engraving-input {
+      width: 100%;
+      height: 48px;
+      padding: 0 16px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .engraving-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(158, 43, 37, 0.2);
+    }
+
+    /* 价格与操作 */
+    .action-section {
+      position: fixed;
+      bottom: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 430px;
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      padding: 15px 20px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      border-top: 2px solid var(--gold);
+      z-index: 99;
+    }
+
+    .price-display {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .price-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .price-breakdown {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 3px;
+    }
+
+    .breakdown-item {
+      font-size: 10px;
+      color: var(--gold);
+    }
+
+    .price-total {
+      display: flex;
+      align-items: baseline;
+    }
+
+    .price-symbol {
+      font-size: 16px;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .price-value {
+      font-size: 28px;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 22px;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s;
+      letter-spacing: 1px;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-ghost {
+      background: rgba(158, 43, 37, 0.1);
+      color: var(--primary);
+      border: 1px solid rgba(158, 43, 37, 0.3);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #FFFFFF;
+      box-shadow: 0 4px 15px rgba(158, 43, 37, 0.3);
+    }
+
+    /* ========== 商城 ========== */
+    .shop-header {
+      padding: 15px 20px;
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .shop-search-box {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      background: var(--bg);
+      border-radius: 20px;
+      padding: 0 18px;
+      border: 1px solid var(--border);
+    }
+
+    .shop-search-box .icon {
+      color: var(--text-muted);
+      margin-right: 10px;
+    }
+
+    .shop-search-box .text {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .category-nav {
+      background: #FFFFFF;
+      padding: 15px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category-list {
+      display: flex;
+      overflow-x: auto;
+      gap: 8px;
+    }
+
+    .category-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 75px;
+      padding: 12px 8px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+
+    .category-item.active {
+      background: linear-gradient(180deg, rgba(158, 43, 37, 0.1) 0%, rgba(158, 43, 37, 0.05) 100%);
+    }
+
+    .category-icon {
+      width: 45px;
+      height: 45px;
+      background: linear-gradient(135deg, var(--bg) 0%, var(--bg-dark) 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .category-item.active .category-icon {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      box-shadow: 0 3px 10px rgba(158, 43, 37, 0.3);
+    }
+
+    .category-name {
+      font-size: 11px;
+      color: var(--text-light);
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .category-item.active .category-name {
+      color: var(--primary);
+      font-weight: 500;
+    }
+
+    .filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: var(--bg-light);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 25px;
+    }
+
+    .filter-tab {
+      font-size: 14px;
+      color: var(--text-light);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .filter-tab.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .filter-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 1px;
+    }
+
+    .product-list {
+      padding: 15px 20px;
+    }
+
+    /* ========== 文化科普 ========== */
+    .culture-header {
+      padding: 25px 20px 30px;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 50%, #3A4D7B 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .culture-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(201, 169, 98, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(158, 43, 37, 0.1) 0%, transparent 40%);
+    }
+
+    .culture-header .title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+      letter-spacing: 4px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .culture-header .subtitle {
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 2px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .culture-tabs {
+      display: flex;
+      background: #FFFFFF;
+      padding: 15px 10px;
+      overflow-x: auto;
+      gap: 5px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .culture-tab {
+      padding: 10px 18px;
+      font-size: 14px;
+      color: var(--text-light);
+      position: relative;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s;
+      border-radius: 20px;
+    }
+
+    .culture-tab.active {
+      color: var(--primary);
+      font-weight: 600;
+      background: rgba(158, 43, 37, 0.08);
+    }
+
+    .culture-list {
+      padding: 20px;
+    }
+
+    .culture-card {
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid rgba(201, 169, 98, 0.2);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .culture-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .culture-image {
+      height: 160px;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 50%, #3A4D7B 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 70px;
+      position: relative;
+    }
+
+    .culture-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 30% 70%, rgba(201, 169, 98, 0.2) 0%, transparent 50%);
+    }
+
+    .culture-category {
+      position: absolute;
+      left: 15px;
+      top: 15px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #FFFFFF;
+      font-size: 11px;
+      padding: 5px 14px;
+      border-radius: 15px;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(158, 43, 37, 0.3);
+    }
+
+    .culture-content {
+      padding: 18px;
+    }
+
+    .culture-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .culture-summary {
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.7;
+      margin-bottom: 15px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .culture-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .culture-stats {
+      display: flex;
+      gap: 18px;
+    }
+
+    .stat-item {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .culture-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-icon {
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .action-icon:hover {
+      transform: scale(1.2);
+    }
+
+    /* 问答入口 */
+    .quiz-entry {
+      position: fixed;
+      bottom: 80px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: #FFFFFF;
+      padding: 12px 18px;
+      border-radius: 25px;
+      box-shadow: 0 4px 20px rgba(158, 43, 37, 0.4);
+      cursor: pointer;
+      z-index: 50;
+      gap: 8px;
+    }
+
+    .quiz-icon {
+      font-size: 18px;
+    }
+
+    .quiz-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .quiz-title {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    .quiz-desc {
+      font-size: 10px;
+      opacity: 0.85;
+    }
+
+    /* ========== 个人中心 ========== */
+    .profile-header {
+      position: relative;
+      padding: 30px 20px 25px;
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+    }
+
+    .profile-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 160px;
+      background: linear-gradient(180deg, transparent 0%, rgba(201, 169, 98, 0.1) 100%);
+    }
+
+    .profile-info {
+      position: relative;
+      display: flex;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .avatar {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-right: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border: 3px solid rgba(255,255,255,0.3);
+    }
+
+    .user-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+      letter-spacing: 2px;
+    }
+
+    .user-desc {
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 1px;
+    }
+
+    .vip-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #FFFFFF;
+      font-size: 10px;
+      padding: 3px 10px;
+      border-radius: 10px;
+      margin-top: 5px;
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+
+    /* 订单卡片 */
+    .profile-card {
+      margin: -15px 15px 0;
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 10;
+      border: 2px solid var(--gold);
+    }
+
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .order-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 2px;
+    }
+
+    .order-more {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+    }
+
+    .order-tabs {
+      display: flex;
+      padding: 18px 0;
+    }
+
+    .order-tab {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .order-tab .icon {
+      font-size: 26px;
+      margin-bottom: 6px;
+    }
+
+    .order-tab .text {
+      font-size: 12px;
+      color: var(--text-light);
+      letter-spacing: 1px;
+    }
+
+    .badge {
+      position: absolute;
+      top: -5px;
+      right: 25%;
+      min-width: 18px;
+      height: 18px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-size: 10px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 5px;
+    }
+
+    /* 菜单 */
+    .profile-menu {
+      margin: 15px;
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+      border: 1px solid rgba(201, 169, 98, 0.2);
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      padding: 18px 18px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item:hover {
+      background: rgba(201, 169, 98, 0.05);
+    }
+
+    .menu-icon {
+      width: 45px;
+      height: 45px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-right: 15px;
+    }
+
+    .menu-content {
+      flex: 1;
+    }
+
+    .menu-title {
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .menu-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .menu-arrow {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .footer {
+      text-align: center;
+      padding: 25px 20px;
+      color: var(--text-muted);
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .footer::before {
+      content: '༄༅། ་ 数字锦带 ་ ༄༅། ་';
+      display: block;
+      margin-bottom: 8px;
+      color: var(--gold);
+      font-size: 12px;
+    }
+
+    /* 弹窗 */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      width: 90%;
+      max-width: 360px;
+      background: #FFFFFF;
+      border-radius: 20px;
+      overflow: hidden;
+      animation: modalIn 0.3s;
+      border: 2px solid var(--gold);
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+    }
+
+    .modal-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #FFFFFF;
+      letter-spacing: 2px;
+    }
+
+    .modal-close {
+      font-size: 28px;
+      color: rgba(255,255,255,0.8);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .modal-close:hover {
+      color: #FFFFFF;
+    }
+
+    .modal-body {
+      padding: 25px 20px;
+    }
+
+    .modal-footer {
+      padding: 15px 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* 问答弹窗 */
+    .quiz-question {
+      font-size: 16px;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 20px;
+      line-height: 1.7;
+      letter-spacing: 1px;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: var(--bg);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 2px solid transparent;
+    }
+
+    .quiz-option:hover {
+      background: rgba(158, 43, 37, 0.05);
+    }
+
+    .quiz-option.selected {
+      border-color: var(--primary);
+      background: rgba(158, 43, 37, 0.08);
+    }
+
+    .option-label {
+      width: 28px;
+      height: 28px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      margin-right: 12px;
+      color: var(--text);
+    }
+
+    .quiz-option.selected .option-label {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .option-text {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    /* 手绘弹窗 */
+    .draw-modal .modal-body {
+      padding: 15px;
+    }
+
+    .draw-canvas-wrap {
+      background: var(--bg);
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      border: 2px dashed var(--border);
+    }
+
+    .draw-canvas {
+      width: 100%;
+      height: 200px;
+      background: #FFFFFF;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .draw-tools {
+      margin-bottom: 15px;
+    }
+
+    .tool-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .tool-label {
+      font-size: 13px;
+      color: var(--text);
+      width: 50px;
+      font-weight: 500;
+    }
+
+    .color-options {
+      display: flex;
+      gap: 15px;
+    }
+
+    .color-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.3s;
+    }
+
+    .color-dot:hover {
+      transform: scale(1.1);
+    }
+
+    .color-dot.active {
+      border-color: var(--text);
+      transform: scale(1.15);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .draw-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .draw-actions .btn {
+      flex: 1;
+    }
+
+    /* 底部占位 */
+    .bottom-space {
+      height: 220px;
+    }
+  </style>
+</head>
+<body>
+  <!-- ========== 首页 ========== -->
+  <div class="page home-page active" id="page-home">
+    <div class="home-header">
+      <span class="header-decoration top-left">☸</span>
+      <span class="header-decoration top-right">☸</span>
+      <div class="header-content">
+        <div class="logo-section">
+          <div class="logo">🎗️</div>
+          <div class="logo-text">
+            <span class="logo-title">数字锦带</span>
+            <span class="logo-subtitle">TIBETAN RIBBON</span>
+          </div>
+        </div>
+        <div class="search-box">
+          <span class="icon">🔍</span>
+          <span class="placeholder">搜索成品 / 定制 / 科普内容</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-section">
+      <div class="banner">
+        <span class="banner-pattern left">☸</span>
+        <span class="banner-pattern right">◆</span>
+        <div class="banner-content">
+          <div class="banner-title">千年藏域锦带</div>
+          <div class="banner-subtitle">一键定制专属非遗</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-grid">
+      <div class="menu-item" onclick="switchPage('custom')">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(158, 43, 37, 0.15), rgba(158, 43, 37, 0.08));">🎗️</div>
+        <span class="menu-name">锦带定制</span>
+      </div>
+      <div class="menu-item" onclick="switchPage('shop')">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(29, 43, 83, 0.15), rgba(29, 43, 83, 0.08));">🛍️</div>
+        <span class="menu-name">成品商城</span>
+      </div>
+      <div class="menu-item" onclick="switchPage('culture')">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(201, 169, 98, 0.2), rgba(201, 169, 98, 0.1));">📜</div>
+        <span class="menu-name">文化科普</span>
+      </div>
+      <div class="menu-item" onclick="switchPage('profile')">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(102, 102, 102, 0.15), rgba(102, 102, 102, 0.08));">👤</div>
+        <span class="menu-name">我的</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-icon">📚</span>
+          <span class="section-title">非遗小知识</span>
+        </div>
+        <span class="section-more" onclick="switchPage('culture')">更多 ></span>
+      </div>
+      <div class="tips-scroll">
+        <div class="tip-card">
+          <div class="tip-icon" style="background: linear-gradient(135deg, #FFF5F5, #FFE8E8);">🦚</div>
+          <div class="tip-content">
+            <div class="tip-title">孔雀纹：藏域吉祥之象征</div>
+            <div class="tip-desc">孔雀纹是藏域锦带中最具代表性的吉祥纹样之一，象征吉祥富贵</div>
+          </div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon" style="background: linear-gradient(135deg, #F5F7FF, #E8EBFF);">🧵</div>
+          <div class="tip-content">
+            <div class="tip-title">千年编织技艺传承</div>
+            <div class="tip-desc">藏域锦带的编织技艺已有千年历史，是藏族非遗重要组成部分</div>
+          </div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon" style="background: linear-gradient(135deg, #FFFEF5, #FFFDE0);">🏔️</div>
+          <div class="tip-content">
+            <div class="tip-title">达玛花纹的由来</div>
+            <div class="tip-desc">达玛花纹源自藏传佛教，是数字锦带品牌的核心文化符号</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="traditional-divider">
+      <span class="divider-symbol">◆</span>
+    </div>
+
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-icon">✨</span>
+          <span class="section-title">热门推荐</span>
+        </div>
+        <span class="section-more" onclick="switchPage('shop')">更多 ></span>
+      </div>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-image">
+            <span class="product-tag">彩虹纹</span>
+            🌈
+          </div>
+          <div class="product-info">
+            <div class="product-name">经典彩虹纹锦带</div>
+            <div class="product-bottom">
+              <span class="product-price">168</span>
+              <span class="product-sales">已售 520</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <span class="product-tag">孔雀纹</span>
+            🦚
+          </div>
+          <div class="product-info">
+            <div class="product-name">吉祥孔雀纹锦带</div>
+            <div class="product-bottom">
+              <span class="product-price">198</span>
+              <span class="product-sales">已售 380</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <span class="product-tag">达玛花纹</span>
+            ❀
+          </div>
+          <div class="product-info">
+            <div class="product-name">达玛花纹商务锦带</div>
+            <div class="product-bottom">
+              <span class="product-price">288</span>
+              <span class="product-sales">已售 256</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <span class="product-tag">格萨尔王纹</span>
+            👑
+          </div>
+          <div class="product-info">
+            <div class="product-name">格萨尔王纹收藏款</div>
+            <div class="product-bottom">
+              <span class="product-price">598</span>
+              <span class="product-sales">已售 128</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 定制中心 ========== -->
+  <div class="page custom-page" id="page-custom">
+    <div class="custom-header">
+      <span class="ornament left">☸</span>
+      <span class="ornament right">☸</span>
+      <div class="title">锦带定制中心</div>
+      <div class="subtitle">设计您的专属非遗锦带</div>
+    </div>
+
+    <div class="preview-section">
+      <div class="preview-title">
+        <span class="text">实时预览</span>
+        <span class="hint">点击格子选择纹样</span>
+      </div>
+      <div class="preview-wrap">
+        <div class="ribbon-preview">
+          <div class="ribbon-body" id="preview-ribbon">
+            <!-- 动态生成 -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-editor">
+      <div class="grid-editor-title">
+        <span class="title">九宫格编辑</span>
+        <span class="clear-btn" onclick="clearGrid()">清空全部</span>
+      </div>
+      <div class="grid-cells" id="grid-cells">
+        <!-- 动态生成 -->
+      </div>
+    </div>
+
+    <div class="pattern-section">
+      <div class="pattern-header">
+        <span class="title">选择纹样</span>
+        <span class="draw-btn" onclick="openDrawModal()">手绘纹样</span>
+      </div>
+      
+      <div class="category-tabs">
+        <div class="category-tab active" data-category="all" onclick="filterPatterns('all')">全部</div>
+        <div class="category-tab" data-category="吉祥类" onclick="filterPatterns('吉祥类')">吉祥类</div>
+        <div class="category-tab" data-category="自然类" onclick="filterPatterns('自然类')">自然类</div>
+        <div class="category-tab" data-category="文化类" onclick="filterPatterns('文化类')">文化类</div>
+      </div>
+
+      <div class="pattern-grid" id="pattern-grid">
+        <!-- 动态生成 -->
+      </div>
+    </div>
+
+    <div class="spec-section">
+      <div class="spec-group">
+        <div class="spec-label">尺　寸</div>
+        <div class="spec-options">
+          <div class="spec-option active" data-price="0" onclick="selectSpec(this, 'size')">常规款
+            <span class="spec-price">宽2cm</span>
+          </div>
+          <div class="spec-option" data-price="-10" onclick="selectSpec(this, 'size')">细款
+            <span class="spec-price">宽1.5cm</span>
+          </div>
+          <div class="spec-option" data-price="20" onclick="selectSpec(this, 'size')">宽款
+            <span class="spec-price">宽3cm +20</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="spec-group">
+        <div class="spec-label">材　质</div>
+        <div class="spec-options">
+          <div class="spec-option active" data-price="0" onclick="selectSpec(this, 'material')">棉麻</div>
+          <div class="spec-option" data-price="15" onclick="selectSpec(this, 'material')">尼龙<span class="spec-price">+15</span></div>
+          <div class="spec-option" data-price="30" onclick="selectSpec(this, 'material')">抗菌纤维<span class="spec-price">+30</span></div>
+        </div>
+      </div>
+
+      <div class="spec-group">
+        <div class="spec-label">配　件</div>
+        <div class="spec-options">
+          <div class="spec-option active" data-price="0" onclick="selectSpec(this, 'accessory')">无配件</div>
+          <div class="spec-option" data-price="10" onclick="selectSpec(this, 'accessory')">龙虾扣<span class="spec-price">+10</span></div>
+          <div class="spec-option" data-price="15" onclick="selectSpec(this, 'accessory')">磁吸扣<span class="spec-price">+15</span></div>
+        </div>
+      </div>
+
+      <div class="spec-group">
+        <div class="spec-label">刻　字</div>
+        <input type="text" class="engraving-input" id="engraving-input" placeholder="输入2-4个字，如姓名或祈福语" maxlength="4" oninput="updateEngraving()">
+      </div>
+    </div>
+
+    <div class="bottom-space"></div>
+
+    <div class="action-section">
+      <div class="price-display">
+        <div class="price-detail">
+          <div class="price-label">定制总价</div>
+          <div class="price-breakdown">
+            <span class="breakdown-item">基础费 ¥99</span>
+            <span class="breakdown-item" id="pattern-fee">纹样费 ¥0</span>
+            <span class="breakdown-item" id="spec-fee">规格费 ¥0</span>
+            <span class="breakdown-item" id="text-fee" style="display:none;">刻字费 ¥20</span>
+          </div>
+        </div>
+        <div class="price-total">
+          <span class="price-symbol">¥</span>
+          <span class="price-value" id="total-price">99</span>
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn btn-ghost" onclick="saveDesign()">保存</button>
+        <button class="btn btn-outline" onclick="addToCart()">加购</button>
+        <button class="btn btn-primary" onclick="buyNow()">购买</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 商城 ========== -->
+  <div class="page shop-page" id="page-shop">
+    <div class="shop-header">
+      <div class="shop-search-box">
+        <span class="icon">🔍</span>
+        <span class="text">搜索锦带商品</span>
+      </div>
+    </div>
+
+    <div class="category-nav">
+      <div class="category-list">
+        <div class="category-item active" onclick="switchShopCategory(this)">
+          <div class="category-icon">👔</div>
+          <span class="category-name">日常实用</span>
+        </div>
+        <div class="category-item" onclick="switchShopCategory(this)">
+          <div class="category-icon">🎁</div>
+          <span class="category-name">文创伴手</span>
+        </div>
+        <div class="category-item" onclick="switchShopCategory(this)">
+          <div class="category-icon">💎</div>
+          <span class="category-name">高端收藏</span>
+        </div>
+        <div class="category-item" onclick="switchShopCategory(this)">
+          <div class="category-icon">✨</div>
+          <span class="category-name">定制成品</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-bar">
+      <div class="filter-tabs">
+        <span class="filter-tab active">综合</span>
+        <span class="filter-tab">销量</span>
+        <span class="filter-tab">价格</span>
+      </div>
+    </div>
+
+    <div class="product-list">
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-image">
+            <span class="product-tag">彩虹纹</span>
+            🌈
+          </div>
+          <div class="product-info">
+            <div class="product-name">经典彩虹纹锦带</div>
+            <div class="product-bottom">
+              <span class="product-price">168</span>
+              <span class="product-sales">已售 520</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <span class="product-tag">孔雀纹</span>
+            🦚
+          </div>
+          <div class="product-info">
+            <div class="product-name">吉祥孔雀纹锦带</div>
+            <div class="product-bottom">
+              <span class="product-price">198</span>
+              <span class="product-sales">已售 380</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <span class="product-tag">达玛花纹</span>
+            ❀
+          </div>
+          <div class="product-info">
+            <div class="product-name">达玛花纹商务锦带</div>
+            <div class="product-bottom">
+              <span class="product-price">288</span>
+              <span class="product-sales">已售 256</span>
+            </div>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image">
+            <span class="product-tag">雪山纹</span>
+            🏔️
+          </div>
+          <div class="product-info">
+            <div class="product-name">雪山纹旅行款</div>
+            <div class="product-bottom">
+              <span class="product-price">188</span>
+              <span class="product-sales">已售 345</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 文化科普 ========== -->
+  <div class="page culture-page" id="page-culture">
+    <div class="culture-header">
+      <div class="title">文化科普</div>
+      <div class="subtitle">探索千年藏域非遗文化</div>
+    </div>
+
+    <div class="culture-tabs">
+      <div class="culture-tab active" onclick="switchCultureTab(this)">全部</div>
+      <div class="culture-tab" onclick="switchCultureTab(this)">纹样文化</div>
+      <div class="culture-tab" onclick="switchCultureTab(this)">编织技艺</div>
+      <div class="culture-tab" onclick="switchCultureTab(this)">非遗故事</div>
+      <div class="culture-tab" onclick="switchCultureTab(this)">达玛女神</div>
+    </div>
+
+    <div class="culture-list">
+      <div class="culture-card">
+        <div class="culture-image">
+          <span class="culture-category">纹样文化</span>
+          🦚
+        </div>
+        <div class="culture-content">
+          <div class="culture-title">孔雀纹：藏域吉祥之象征</div>
+          <div class="culture-summary">孔雀纹是藏域锦带中最具代表性的吉祥纹样之一，象征着吉祥富贵、美好幸福...</div>
+          <div class="culture-footer">
+            <div class="culture-stats">
+              <span class="stat-item">👁 1.2万</span>
+              <span class="stat-item">❤ 892</span>
+            </div>
+            <div class="culture-actions">
+              <span class="action-icon" onclick="toggleLike(this)">🤍</span>
+              <span class="action-icon">📤</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="culture-card">
+        <div class="culture-image">
+          <span class="culture-category">编织技艺</span>
+          🧵
+        </div>
+        <div class="culture-content">
+          <div class="culture-title">千年编织技艺传承</div>
+          <div class="culture-summary">藏域锦带的编织技艺已有千年历史，是藏族非物质文化遗产的重要组成部分...</div>
+          <div class="culture-footer">
+            <div class="culture-stats">
+              <span class="stat-item">👁 9876</span>
+              <span class="stat-item">❤ 654</span>
+            </div>
+            <div class="culture-actions">
+              <span class="action-icon" onclick="toggleLike(this)">🤍</span>
+              <span class="action-icon">📤</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="culture-card">
+        <div class="culture-image">
+          <span class="culture-category">非遗故事</span>
+          📜
+        </div>
+        <div class="culture-content">
+          <div class="culture-title">数字锦带创始人：达玛女神的故事</div>
+          <div class="culture-summary">达玛女神是藏传佛教中的编织保护神，相传她传授了人类编织锦带的技术...</div>
+          <div class="culture-footer">
+            <div class="culture-stats">
+              <span class="stat-item">👁 1.5万</span>
+              <span class="stat-item">❤ 1203</span>
+            </div>
+            <div class="culture-actions">
+              <span class="action-icon" onclick="toggleLike(this)">🤍</span>
+              <span class="action-icon">📤</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="culture-card">
+        <div class="culture-image">
+          <span class="culture-category">达玛女神IP</span>
+          ☸
+        </div>
+        <div class="culture-content">
+          <div class="culture-title">达玛女神IP文化解读</div>
+          <div class="culture-summary">达玛女神是数字锦带品牌的灵感来源，代表着传承与创新的完美融合...</div>
+          <div class="culture-footer">
+            <div class="culture-stats">
+              <span class="stat-item">👁 8765</span>
+              <span class="stat-item">❤ 543</span>
+            </div>
+            <div class="culture-actions">
+              <span class="action-icon" onclick="toggleLike(this)">🤍</span>
+              <span class="action-icon">📤</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quiz-entry" onclick="openQuizModal()">
+      <span class="quiz-icon">❓</span>
+      <div class="quiz-text">
+        <span class="quiz-title">非遗知识问答</span>
+        <span class="quiz-desc">测试您的了解程度</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 个人中心 ========== -->
+  <div class="page profile-page" id="page-profile">
+    <div class="profile-header">
+      <div class="profile-bg"></div>
+      <div class="profile-info">
+        <div class="avatar">👤</div>
+        <div class="user-text">
+          <div class="user-name">藏域之友</div>
+          <div class="user-desc">会员ID: JD20240001</div>
+          <span class="vip-badge">VIP会员</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <div class="order-header">
+        <span class="order-title">我的订单</span>
+        <span class="order-more">全部订单 ></span>
+      </div>
+      <div class="order-tabs">
+        <div class="order-tab">
+          <span class="icon">⏰</span>
+          <span class="text">待付款</span>
+          <span class="badge">1</span>
+        </div>
+        <div class="order-tab">
+          <span class="icon">📦</span>
+          <span class="text">待发货</span>
+        </div>
+        <div class="order-tab">
+          <span class="icon">🚚</span>
+          <span class="text">待收货</span>
+          <span class="badge">2</span>
+        </div>
+        <div class="order-tab">
+          <span class="icon">✅</span>
+          <span class="text">已完成</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-menu">
+      <div class="menu-item">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(158, 43, 37, 0.15), rgba(158, 43, 37, 0.08));">🎗️</div>
+        <div class="menu-content">
+          <div class="menu-title">我的定制</div>
+          <div class="menu-desc">查看保存的定制方案</div>
+        </div>
+        <span class="menu-arrow">></span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(201, 169, 98, 0.2), rgba(201, 169, 98, 0.1));">❤️</div>
+        <div class="menu-content">
+          <div class="menu-title">我的收藏</div>
+          <div class="menu-desc">收藏的商品和科普内容</div>
+        </div>
+        <span class="menu-arrow">></span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(29, 43, 83, 0.15), rgba(29, 43, 83, 0.08));">📍</div>
+        <div class="menu-content">
+          <div class="menu-title">收货地址</div>
+          <div class="menu-desc">管理收货信息</div>
+        </div>
+        <span class="menu-arrow">></span>
+      </div>
+    </div>
+
+    <div class="profile-menu">
+      <div class="menu-item">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(29, 43, 83, 0.15), rgba(29, 43, 83, 0.08));">🏠</div>
+        <div class="menu-content">
+          <div class="menu-title">关于我们</div>
+          <div class="menu-desc">了解数字锦带与非遗工坊</div>
+        </div>
+        <span class="menu-arrow">></span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(201, 169, 98, 0.2), rgba(201, 169, 98, 0.1));">💬</div>
+        <div class="menu-content">
+          <div class="menu-title">意见反馈</div>
+          <div class="menu-desc">您的建议是我们改进的动力</div>
+        </div>
+        <span class="menu-arrow">></span>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(102, 102, 102, 0.15), rgba(102, 102, 102, 0.08));">⚙️</div>
+        <div class="menu-content">
+          <div class="menu-title">设置</div>
+          <div class="menu-desc">账号与偏好设置</div>
+        </div>
+        <span class="menu-arrow">></span>
+      </div>
+    </div>
+
+    <div class="footer">© 2024 藏域非遗传承</div>
+  </div>
+
+  <!-- 底部导航 -->
+  <div class="tab-bar">
+    <div class="tab-item active" onclick="switchTab(this, 'home')">
+      <span class="icon">🏠</span>
+      <span class="text">首页</span>
+    </div>
+    <div class="tab-item" onclick="switchTab(this, 'custom')">
+      <span class="icon">🎗️</span>
+      <span class="text">定制</span>
+    </div>
+    <div class="tab-item" onclick="switchTab(this, 'shop')">
+      <span class="icon">🛍️</span>
+      <span class="text">商城</span>
+    </div>
+    <div class="tab-item" onclick="switchTab(this, 'culture')">
+      <span class="icon">📜</span>
+      <span class="text">科普</span>
+    </div>
+    <div class="tab-item" onclick="switchTab(this, 'profile')">
+      <span class="icon">👤</span>
+      <span class="text">我的</span>
+    </div>
+  </div>
+
+  <!-- 问答弹窗 -->
+  <div class="modal" id="quiz-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">非遗知识问答</span>
+        <span class="modal-close" onclick="closeQuizModal()">×</span>
+      </div>
+      <div class="modal-body">
+        <div class="quiz-question">请问达玛花纹的寓意是什么？</div>
+        <div class="quiz-options">
+          <div class="quiz-option" onclick="selectQuizOption(this)">
+            <span class="option-label">A</span>
+            <span class="option-text">英勇无畏</span>
+          </div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">
+            <span class="option-label">B</span>
+            <span class="option-text">平安吉祥</span>
+          </div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">
+            <span class="option-label">C</span>
+            <span class="option-text">吉祥富贵</span>
+          </div>
+          <div class="quiz-option" onclick="selectQuizOption(this)">
+            <span class="option-label">D</span>
+            <span class="option-text">纯洁高雅</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" style="width: 100%;" onclick="submitQuiz()">确定答案</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 手绘弹窗 -->
+  <div class="modal draw-modal" id="draw-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">手绘纹样</span>
+        <span class="modal-close" onclick="closeDrawModal()">×</span>
+      </div>
+      <div class="modal-body">
+        <div class="draw-canvas-wrap">
+          <div class="draw-canvas" id="draw-canvas">
+            点击此处开始手绘...
+          </div>
+        </div>
+        <div class="draw-tools">
+          <div class="tool-group">
+            <span class="tool-label">颜色</span>
+            <div class="color-options">
+              <div class="color-dot active" style="background: #9E2B25;" onclick="selectDrawColor(this, '#9E2B25')"></div>
+              <div class="color-dot" style="background: #1D2B53;" onclick="selectDrawColor(this, '#1D2B53')"></div>
+              <div class="color-dot" style="background: #333333;" onclick="selectDrawColor(this, '#333333')"></div>
+              <div class="color-dot" style="background: #C9A962;" onclick="selectDrawColor(this, '#C9A962')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="draw-actions">
+          <button class="btn btn-ghost" onclick="clearDraw()">清空</button>
+          <button class="btn btn-ghost" style="flex: 2;">橡皮擦</button>
+          <button class="btn btn-primary" style="flex: 2;" onclick="saveDraw()">保存纹样</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 纹样数据
+    const patterns = [
+      { id: 1, name: '孔雀纹', category: '吉祥类', icon: '🦚', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 2, name: '彩虹纹', category: '自然类', icon: '🌈', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
+      { id: 3, name: '达玛花纹', category: '吉祥类', icon: '❀', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 4, name: '格萨尔王纹', category: '文化类', icon: '👑', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
+      { id: 5, name: '祥云纹', category: '吉祥类', icon: '☁️', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 6, name: '雪山纹', category: '自然类', icon: '🏔️', bgColor: 'linear-gradient(135deg, #F5FAFF, #E0F0FF)' },
+      { id: 7, name: '法轮纹', category: '文化类', icon: '☸️', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 8, name: '莲花纹', category: '吉祥类', icon: '🪷', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' }
+    ];
+
+    let gridPatterns = [null, null, null, null, null, null, null, null, null];
+    let selectedCell = -1;
+    let currentCategory = 'all';
+    let specPrices = { size: 0, material: 0, accessory: 0 };
+
+    // 初始化
+    function init() {
+      renderGrid();
+      renderPatterns();
+      updatePrice();
+    }
+
+    // 渲染九宫格
+    function renderGrid() {
+      const gridCells = document.getElementById('grid-cells');
+      const previewRibbon = document.getElementById('preview-ribbon');
+      
+      let gridHTML = '';
+      let previewHTML = '';
+      
+      for (let i = 0; i < 9; i++) {
+        const pattern = gridPatterns[i];
+        const icon = pattern ? pattern.icon : '+';
+        const bgColor = pattern ? pattern.bgColor : '';
+        const filledClass = pattern ? 'filled' : '';
+        const activeClass = selectedCell === i ? 'active' : '';
+        
+        gridHTML += `
+          <div class="grid-cell ${activeClass}" onclick="selectCell(${i})">
+            <div class="grid-cell-bg" style="${pattern ? 'background:' + pattern.bgColor + ';border:none;' : ''}">${icon}</div>
+          </div>
+        `;
+        
+        previewHTML += `
+          <div class="ribbon-cell ${filledClass}" style="${pattern ? 'background:' + pattern.bgColor.split(',')[1].replace(')', '').trim() + ';border:none;' : ''}" onclick="selectCell(${i})">${icon}</div>
+        `;
+      }
+      
+      gridCells.innerHTML = gridHTML;
+      previewRibbon.innerHTML = previewHTML;
+    }
+
+    // 渲染纹样
+    function renderPatterns() {
+      const patternGrid = document.getElementById('pattern-grid');
+      let filtered = patterns;
+      
+      if (currentCategory !== 'all') {
+        filtered = patterns.filter(p => p.category === currentCategory);
+      }
+      
+      let html = '';
+      filtered.forEach(pattern => {
+        html += `
+          <div class="pattern-item" onclick="applyPattern(${pattern.id})">
+            <div class="pattern-icon" style="background: ${pattern.bgColor};">${pattern.icon}</div>
+            <span class="pattern-name">${pattern.name}</span>
+          </div>
+        `;
+      });
+      
+      patternGrid.innerHTML = html;
+    }
+
+    // 选择格子
+    function selectCell(index) {
+      selectedCell = selectedCell === index ? -1 : index;
+      renderGrid();
+    }
+
+    // 应用纹样
+    function applyPattern(id) {
+      if (selectedCell === -1) {
+        alert('请先选择要填充的格子');
+        return;
+      }
+      
+      const pattern = patterns.find(p => p.id === id);
+      if (pattern) {
+        gridPatterns[selectedCell] = pattern;
+        selectedCell = -1;
+        renderGrid();
+        updatePrice();
+      }
+    }
+
+    // 清空格子
+    function clearGrid() {
+      if (confirm('确定要清空所有格子吗？')) {
+        gridPatterns = [null, null, null, null, null, null, null, null, null];
+        selectedCell = -1;
+        renderGrid();
+        updatePrice();
+      }
+    }
+
+    // 筛选纹样
+    function filterPatterns(category) {
+      currentCategory = category;
+      
+      document.querySelectorAll('.category-tabs .category-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.category === category);
+      });
+      
+      renderPatterns();
+    }
+
+    // 选择规格
+    function selectSpec(element, type) {
+      const parent = element.parentElement;
+      parent.querySelectorAll('.spec-option').forEach(opt => opt.classList.remove('active'));
+      element.classList.add('active');
+      
+      specPrices[type] = parseInt(element.dataset.price) || 0;
+      updatePrice();
+    }
+
+    // 更新刻字
+    function updateEngraving() {
+      const text = document.getElementById('engraving-input').value;
+      document.getElementById('text-fee').style.display = text ? 'inline' : 'none';
+      updatePrice();
+    }
+
+    // 更新价格
+    function updatePrice() {
+      const basePrice = 99;
+      const patternFee = gridPatterns.filter(p => p !== null).length * 10;
+      const specFee = specPrices.size + specPrices.material + specPrices.accessory;
+      const textFee = document.getElementById('engraving-input').value ? 20 : 0;
+      
+      document.getElementById('pattern-fee').textContent = `纹样费 ¥${patternFee}`;
+      document.getElementById('spec-fee').textContent = `规格费 ¥${specFee}`;
+      
+      const total = basePrice + patternFee + specFee + textFee;
+      document.getElementById('total-price').textContent = total;
+    }
+
+    // 页面切换
+    function switchPage(page) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+      
+      document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+      document.querySelector(`.tab-item[onclick*="'${page}'"]`).classList.add('active');
+      
+      window.scrollTo(0, 0);
+    }
+
+    // 底部导航
+    function switchTab(element, page) {
+      document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+      element.classList.add('active');
+      switchPage(page);
+    }
+
+    // 商城分类
+    function switchShopCategory(element) {
+      element.parentElement.querySelectorAll('.category-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      element.classList.add('active');
+    }
+
+    // 文化科普标签
+    function switchCultureTab(element) {
+      element.parentElement.querySelectorAll('.culture-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      element.classList.add('active');
+    }
+
+    // 收藏
+    function toggleLike(element) {
+      if (element.textContent === '🤍') {
+        element.textContent = '❤️';
+        alert('已收藏！');
+      } else {
+        element.textContent = '🤍';
+      }
+    }
+
+    // 问答弹窗
+    function openQuizModal() {
+      document.getElementById('quiz-modal').classList.add('active');
+    }
+
+    function closeQuizModal() {
+      document.getElementById('quiz-modal').classList.remove('active');
+    }
+
+    function selectQuizOption(element) {
+      element.parentElement.querySelectorAll('.quiz-option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+      element.classList.add('selected');
+    }
+
+    function submitQuiz() {
+      const selected = document.querySelector('.quiz-option.selected');
+      if (!selected) {
+        alert('请选择一个答案');
+        return;
+      }
+      
+      const isCorrect = selected.querySelector('.option-text').textContent === '平安吉祥';
+      if (isCorrect) {
+        alert('✓ 回答正确！\n\n达玛花纹源自藏传佛教，是吉祥纹样，寓意平安吉祥。');
+      } else {
+        alert('✗ 回答错误\n\n正确答案是：平安吉祥\n\n达玛花纹源自藏传佛教，是吉祥纹样，寓意平安吉祥。');
+      }
+      closeQuizModal();
+    }
+
+    // 手绘弹窗
+    function openDrawModal() {
+      document.getElementById('draw-modal').classList.add('active');
+    }
+
+    function closeDrawModal() {
+      document.getElementById('draw-modal').classList.remove('active');
+    }
+
+    function selectDrawColor(element, color) {
+      document.querySelectorAll('.color-dot').forEach(dot => dot.classList.remove('active'));
+      element.classList.add('active');
+    }
+
+    function clearDraw() {
+      const canvas = document.getElementById('draw-canvas');
+      canvas.innerHTML = '点击此处开始手绘...';
+      canvas.style.color = '#999';
+    }
+
+    function saveDraw() {
+      alert('手绘纹样已保存到我的纹样库！');
+      closeDrawModal();
+    }
+
+    // 操作按钮
+    function saveDesign() {
+      alert('定制方案已保存！');
+    }
+
+    function addToCart() {
+      alert('已加入购物车！');
+    }
+
+    function buyNow() {
+      alert('正在跳转订单确认页面...\n（这是演示版本）');
+    }
+
+    // 启动
+    init();
+  </script>
+</body>
+</html>
