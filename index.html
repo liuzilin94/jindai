@@ -375,19 +375,19 @@
       letter-spacing: 2px;
     }
 
-    /* 功能入口 */
+    /* 功能入口（具体样式见下方 .home-page .menu-grid，避免与个人中心 .menu-item 冲突） */
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      padding: 25px 20px;
-      margin: 15px 0;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px 8px;
+      padding: 22px 14px 24px;
+      margin: -10px 15px 0;
       background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-light) 100%);
       border-radius: 20px;
-      margin: -10px 15px 0;
       position: relative;
       z-index: 10;
       box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      box-sizing: border-box;
     }
 
     .menu-grid::before {
@@ -765,50 +765,59 @@
     }
 
     .preview-wrap {
-      background: var(--bg);
-      border-radius: 16px;
-      padding: 30px;
+      background: transparent;
+      border-radius: 0;
+      padding: 16px 12px;
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 2px dashed var(--border);
+      border: none;
     }
 
     .ribbon-preview {
       display: flex;
       flex-direction: column;
       align-items: center;
+      width: 100%;
     }
 
+    /* 锦带：3 行 × 6 列 = 下方九宫格「横铺」后左右各一份无缝拼接 */
     .ribbon-body {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
-      width: 200px;
-      transform: rotate(-90deg);
-      background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-dark));
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold), var(--gold-light), var(--gold), var(--gold-dark));
       padding: 6px;
-      border-radius: 8px;
+      border-radius: 10px;
+      box-sizing: border-box;
+    }
+
+    .ribbon-row {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      gap: 0;
+      line-height: 0;
     }
 
     .ribbon-cell {
-      width: 60px;
-      height: 60px;
+      width: 46px;
+      height: 46px;
       background: var(--bg);
-      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 22px;
       cursor: pointer;
-      transition: all 0.3s;
-      border: 1px solid var(--border);
+      transition: background 0.2s;
+      border: none;
+      border-radius: 0;
+      box-sizing: border-box;
+      flex-shrink: 0;
     }
 
     .ribbon-cell:hover {
-      transform: scale(1.05);
-      box-shadow: 0 2px 10px rgba(158, 43, 37, 0.3);
-      border-color: var(--primary);
+      background: rgba(158, 43, 37, 0.12);
     }
 
     .ribbon-cell.filled {
@@ -1720,6 +1729,71 @@
       color: var(--text-muted);
     }
 
+    /* 首页快捷导航：个人中心后定义的 .menu-item / .menu-icon 会覆盖同名类，此处强制恢复竖排入口并防裁切 */
+    .home-page .menu-grid .menu-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+      border-bottom: none;
+      min-width: 0;
+    }
+
+    .home-page .menu-grid .menu-item:hover {
+      background: transparent;
+    }
+
+    .home-page .menu-grid .menu-item:active {
+      transform: scale(0.96);
+    }
+
+    .home-page .menu-grid .menu-icon {
+      width: clamp(44px, 18vw, 56px);
+      height: clamp(44px, 18vw, 56px);
+      border-radius: 50%;
+      margin-right: 0;
+      margin-bottom: 8px;
+      font-size: clamp(22px, 7vw, 28px);
+      flex-shrink: 0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .home-page .menu-grid .menu-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.5px;
+      text-align: center;
+      line-height: 1.3;
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      word-break: keep-all;
+    }
+
+    @media (max-width: 360px) {
+      .home-page .menu-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px 14px;
+        padding: 20px 18px 22px;
+      }
+
+      .home-page .menu-grid .menu-icon {
+        width: 52px;
+        height: 52px;
+        font-size: 26px;
+      }
+
+      .home-page .menu-grid .menu-name {
+        font-size: 13px;
+        -webkit-line-clamp: 1;
+      }
+    }
+
     .footer {
       text-align: center;
       padding: 25px 20px;
@@ -1949,18 +2023,48 @@
   <!-- ========== 首页 ========== -->
   <div class="page home-page active" id="page-home">
     <div class="home-header">
-      <span class="header-decoration top-left">☸</span>
-      <span class="header-decoration top-right">☸</span>
+      <span class="header-decoration top-left">
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.4">
+          <circle cx="25" cy="25" r="8"/><circle cx="25" cy="25" r="15"/>
+          <line x1="25" y1="3" x2="25" y2="10"/><line x1="25" y1="40" x2="25" y2="47"/>
+          <line x1="3" y1="25" x2="10" y2="25"/><line x1="40" y1="25" x2="47" y2="25"/>
+          <line x1="9" y1="9" x2="14" y2="14"/><line x1="36" y1="36" x2="41" y2="41"/>
+          <line x1="41" y1="9" x2="36" y2="14"/><line x1="14" y1="36" x2="9" y2="41"/>
+        </svg>
+      </span>
+      <span class="header-decoration top-right">
+        <svg viewBox="0 0 50 50" width="46" height="46" fill="none" stroke="currentColor" stroke-width="1.8" opacity="0.4">
+          <circle cx="25" cy="25" r="8"/><circle cx="25" cy="25" r="15"/>
+          <line x1="25" y1="3" x2="25" y2="10"/><line x1="25" y1="40" x2="25" y2="47"/>
+          <line x1="3" y1="25" x2="10" y2="25"/><line x1="40" y1="25" x2="47" y2="25"/>
+          <line x1="9" y1="9" x2="14" y2="14"/><line x1="36" y1="36" x2="41" y2="41"/>
+          <line x1="41" y1="9" x2="36" y2="14"/><line x1="14" y1="36" x2="9" y2="41"/>
+        </svg>
+      </span>
       <div class="header-content">
         <div class="logo-section">
-          <div class="logo">🎗️</div>
+          <div class="logo">
+            <svg viewBox="0 0 36 36" width="32" height="32" fill="none">
+              <rect x="2" y="14" width="32" height="8" rx="2" fill="white" opacity="0.9"/>
+              <rect x="5" y="16" width="5" height="4" rx="1" fill="#9E2B25" opacity="0.7"/>
+              <rect x="11" y="16" width="5" height="4" rx="1" fill="#C9A962" opacity="0.9"/>
+              <rect x="17" y="16" width="5" height="4" rx="1" fill="#1D2B53" opacity="0.7"/>
+              <rect x="23" y="16" width="5" height="4" rx="1" fill="#9E2B25" opacity="0.7"/>
+              <path d="M6 14 Q18 8 30 14" stroke="white" stroke-width="1.5" fill="none" opacity="0.6"/>
+              <path d="M6 22 Q18 28 30 22" stroke="white" stroke-width="1.5" fill="none" opacity="0.6"/>
+            </svg>
+          </div>
           <div class="logo-text">
             <span class="logo-title">数字锦带</span>
             <span class="logo-subtitle">TIBETAN RIBBON</span>
           </div>
         </div>
         <div class="search-box">
-          <span class="icon">🔍</span>
+          <span class="icon">
+            <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="#999" stroke-width="2">
+              <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
+            </svg>
+          </span>
           <span class="placeholder">搜索成品 / 定制 / 科普内容</span>
         </div>
       </div>
@@ -1968,8 +2072,20 @@
 
     <div class="banner-section">
       <div class="banner">
-        <span class="banner-pattern left">☸</span>
-        <span class="banner-pattern right">◆</span>
+        <span class="banner-pattern left">
+          <svg viewBox="0 0 50 50" width="90" height="90" fill="none" stroke="currentColor" stroke-width="1.2" opacity="0.15">
+            <circle cx="25" cy="25" r="9"/><circle cx="25" cy="25" r="18"/>
+            <line x1="25" y1="2" x2="25" y2="7"/><line x1="25" y1="43" x2="25" y2="48"/>
+            <line x1="2" y1="25" x2="7" y2="25"/><line x1="43" y1="25" x2="48" y2="25"/>
+            <line x1="8" y1="8" x2="13" y2="13"/><line x1="37" y1="37" x2="42" y2="42"/>
+            <line x1="42" y1="8" x2="37" y2="13"/><line x1="13" y1="37" x2="8" y2="42"/>
+          </svg>
+        </span>
+        <span class="banner-pattern right">
+          <svg viewBox="0 0 20 20" width="70" height="70" fill="currentColor" opacity="0.08">
+            <polygon points="10,1 12.9,7.1 19.5,7.6 14.5,12 16.2,18.5 10,15 3.8,18.5 5.5,12 0.5,7.6 7.1,7.1"/>
+          </svg>
+        </span>
         <div class="banner-content">
           <div class="banner-title">千年藏域锦带</div>
           <div class="banner-subtitle">一键定制专属非遗</div>
@@ -1979,19 +2095,50 @@
 
     <div class="menu-grid">
       <div class="menu-item" onclick="switchPage('custom')">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(158, 43, 37, 0.15), rgba(158, 43, 37, 0.08));">🎗️</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(158, 43, 37, 0.15), rgba(158, 43, 37, 0.08));">
+          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+            <rect x="1" y="11" width="26" height="6" rx="2" fill="#9E2B25"/>
+            <rect x="4" y="12.5" width="5" height="3" rx="0.5" fill="white" opacity="0.7"/>
+            <rect x="10" y="12.5" width="5" height="3" rx="0.5" fill="#C9A962" opacity="0.9"/>
+            <rect x="16" y="12.5" width="5" height="3" rx="0.5" fill="white" opacity="0.7"/>
+            <rect x="22" y="12.5" width="4" height="3" rx="0.5" fill="#C9A962" opacity="0.9"/>
+            <path d="M5 11 Q14 6 23 11" stroke="white" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M5 17 Q14 22 23 17" stroke="white" stroke-width="1" fill="none" opacity="0.5"/>
+          </svg>
+        </div>
         <span class="menu-name">锦带定制</span>
       </div>
       <div class="menu-item" onclick="switchPage('shop')">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(29, 43, 83, 0.15), rgba(29, 43, 83, 0.08));">🛍️</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(29, 43, 83, 0.15), rgba(29, 43, 83, 0.08));">
+          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+            <path d="M6 10 Q6 5 14 5 Q22 5 22 10 L23 22 Q23 25 20 25 L8 25 Q5 25 5 22 Z" fill="#1D2B53" opacity="0.85"/>
+            <path d="M10 25 L10 20 Q10 16 14 16 Q18 16 18 20 L18 25" stroke="white" stroke-width="1.5" fill="none" opacity="0.5"/>
+            <circle cx="11" cy="13" r="1.5" fill="white" opacity="0.7"/>
+            <circle cx="17" cy="13" r="1.5" fill="white" opacity="0.7"/>
+          </svg>
+        </div>
         <span class="menu-name">成品商城</span>
       </div>
       <div class="menu-item" onclick="switchPage('culture')">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(201, 169, 98, 0.2), rgba(201, 169, 98, 0.1));">📜</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(201, 169, 98, 0.2), rgba(201, 169, 98, 0.1));">
+          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+            <rect x="5" y="3" width="18" height="22" rx="2" fill="#C9A962" opacity="0.8"/>
+            <rect x="7" y="5" width="14" height="18" rx="1" fill="white"/>
+            <line x1="9" y1="10" x2="19" y2="10" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="9" y1="14" x2="17" y2="14" stroke="#ddd" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="9" y1="17" x2="15" y2="17" stroke="#ddd" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="14" cy="21" r="2.5" fill="#9E2B25" opacity="0.7"/>
+          </svg>
+        </div>
         <span class="menu-name">文化科普</span>
       </div>
       <div class="menu-item" onclick="switchPage('profile')">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(102, 102, 102, 0.15), rgba(102, 102, 102, 0.08));">👤</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(102, 102, 102, 0.15), rgba(102, 102, 102, 0.08));">
+          <svg viewBox="0 0 28 28" width="26" height="26" fill="none">
+            <circle cx="14" cy="10" r="5" fill="#666" opacity="0.7"/>
+            <path d="M5 24 Q5 18 14 18 Q23 18 23 24" fill="#666" opacity="0.6"/>
+          </svg>
+        </div>
         <span class="menu-name">我的</span>
       </div>
     </div>
@@ -1999,28 +2146,57 @@
     <div class="section">
       <div class="section-header">
         <div class="section-title-wrap">
-          <span class="section-icon">📚</span>
+          <span class="section-icon">
+            <svg viewBox="0 0 20 20" width="18" height="18" fill="none">
+              <rect x="2" y="3" width="16" height="14" rx="2" stroke="#9E2B25" stroke-width="1.5" fill="none"/>
+              <line x1="2" y1="7" x2="18" y2="7" stroke="#9E2B25" stroke-width="1.5"/>
+              <line x1="6" y1="3" x2="6" y2="7"/><line x1="14" y1="3" x2="14" y2="7"/>
+            </svg>
+          </span>
           <span class="section-title">非遗小知识</span>
         </div>
         <span class="section-more" onclick="switchPage('culture')">更多 ></span>
       </div>
       <div class="tips-scroll">
         <div class="tip-card">
-          <div class="tip-icon" style="background: linear-gradient(135deg, #FFF5F5, #FFE8E8);">🦚</div>
+          <div class="tip-icon" style="background: linear-gradient(135deg, #FFF5F5, #FFE8E8);">
+            <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+              <ellipse cx="14" cy="22" rx="8" ry="3" fill="#9E2B25" opacity="0.15"/>
+              <path d="M14 6 Q18 10 14 14 Q10 18 6 14" stroke="#9E2B25" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <path d="M14 6 Q18 10 14 14 Q10 18 6 14" stroke="#C9A962" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.5" transform="translate(1.5,1.5) scale(0.85)"/>
+              <line x1="10" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="18" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="14" cy="8" r="2" fill="#9E2B25" opacity="0.6"/>
+            </svg>
+          </div>
           <div class="tip-content">
             <div class="tip-title">孔雀纹：藏域吉祥之象征</div>
             <div class="tip-desc">孔雀纹是藏域锦带中最具代表性的吉祥纹样之一，象征吉祥富贵</div>
           </div>
         </div>
         <div class="tip-card">
-          <div class="tip-icon" style="background: linear-gradient(135deg, #F5F7FF, #E8EBFF);">🧵</div>
+          <div class="tip-icon" style="background: linear-gradient(135deg, #F5F7FF, #E8EBFF);">
+            <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+              <line x1="6" y1="9" x2="22" y2="9" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="8" y1="13" x2="20" y2="13" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+              <line x1="10" y1="17" x2="18" y2="17" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+              <path d="M14 5 L14 9" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M14 17 L14 23" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="14" cy="23" r="2" fill="#C9A962" opacity="0.7"/>
+            </svg>
+          </div>
           <div class="tip-content">
             <div class="tip-title">千年编织技艺传承</div>
             <div class="tip-desc">藏域锦带的编织技艺已有千年历史，是藏族非遗重要组成部分</div>
           </div>
         </div>
         <div class="tip-card">
-          <div class="tip-icon" style="background: linear-gradient(135deg, #FFFEF5, #FFFDE0);">🏔️</div>
+          <div class="tip-icon" style="background: linear-gradient(135deg, #FFFEF5, #FFFDE0);">
+            <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+              <polygon points="14,3 16,10 23,10 17.5,14.5 19.5,21.5 14,17.5 8.5,21.5 10.5,14.5 5,10 12,10" stroke="#1D2B53" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+              <polygon points="14,6 15.5,11 20.5,11 16.5,14 18,18.5 14,15.5 10,18.5 11.5,14 7.5,11 12.5,11" fill="#C9A962" opacity="0.2"/>
+            </svg>
+          </div>
           <div class="tip-content">
             <div class="tip-title">达玛花纹的由来</div>
             <div class="tip-desc">达玛花纹源自藏传佛教，是数字锦带品牌的核心文化符号</div>
@@ -2030,13 +2206,21 @@
     </div>
 
     <div class="traditional-divider">
-      <span class="divider-symbol">◆</span>
+      <span class="divider-symbol">
+        <svg viewBox="0 0 14 14" width="12" height="12" fill="#C9A962" opacity="0.5">
+          <polygon points="7,1 8.8,5.2 13.5,5.5 9.8,8.4 11.1,13 7,10.5 2.9,13 4.2,8.4 0.5,5.5 5.2,5.2"/>
+        </svg>
+      </span>
     </div>
 
     <div class="section">
       <div class="section-header">
         <div class="section-title-wrap">
-          <span class="section-icon">✨</span>
+          <span class="section-icon">
+            <svg viewBox="0 0 20 20" width="18" height="18" fill="none">
+              <polygon points="10,2 12.5,7.5 18.5,8 14,12 15.5,18 10,15 4.5,18 6,12 1.5,8 7.5,7.5" stroke="#C9A962" stroke-width="1.2" fill="#C9A962" opacity="0.25"/>
+            </svg>
+          </span>
           <span class="section-title">热门推荐</span>
         </div>
         <span class="section-more" onclick="switchPage('shop')">更多 ></span>
@@ -2045,7 +2229,15 @@
         <div class="product-card">
           <div class="product-image">
             <span class="product-tag">彩虹纹</span>
-            🌈
+            <svg viewBox="0 0 40 20" width="40" height="20" fill="none">
+              <rect x="0" y="6" width="40" height="8" rx="2"/>
+              <rect x="0" y="6" width="40" height="4" rx="2" fill="white" opacity="0.3"/>
+              <rect x="0" y="7" width="8" height="6" fill="#9E2B25" opacity="0.85"/>
+              <rect x="8" y="7" width="8" height="6" fill="#C9A962" opacity="0.9"/>
+              <rect x="16" y="7" width="8" height="6" fill="#1D2B53" opacity="0.85"/>
+              <rect x="24" y="7" width="8" height="6" fill="#C9A962" opacity="0.9"/>
+              <rect x="32" y="7" width="8" height="6" fill="#9E2B25" opacity="0.85"/>
+            </svg>
           </div>
           <div class="product-info">
             <div class="product-name">经典彩虹纹锦带</div>
@@ -2058,7 +2250,13 @@
         <div class="product-card">
           <div class="product-image">
             <span class="product-tag">孔雀纹</span>
-            🦚
+            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
+              <ellipse cx="14" cy="22" rx="8" ry="3" fill="#9E2B25" opacity="0.15"/>
+              <path d="M14 6 Q18 10 14 14 Q10 18 6 14" stroke="#9E2B25" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <line x1="10" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="18" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="14" cy="8" r="2" fill="#9E2B25" opacity="0.6"/>
+            </svg>
           </div>
           <div class="product-info">
             <div class="product-name">吉祥孔雀纹锦带</div>
@@ -2071,7 +2269,18 @@
         <div class="product-card">
           <div class="product-image">
             <span class="product-tag">达玛花纹</span>
-            ❀
+            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
+              <circle cx="14" cy="14" r="10" stroke="#C9A962" stroke-width="1.5" fill="none"/>
+              <circle cx="14" cy="14" r="5" fill="#C9A962" opacity="0.25"/>
+              <line x1="14" y1="4" x2="14" y2="9" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="14" y1="19" x2="14" y2="24" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="4" y1="14" x2="9" y2="14" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="19" y1="14" x2="24" y2="14" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="7" y1="7" x2="11" y2="11" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="17" y1="17" x2="21" y2="21" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="21" y1="7" x2="17" y2="11" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="11" y1="17" x2="7" y2="21" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
           </div>
           <div class="product-info">
             <div class="product-name">达玛花纹商务锦带</div>
@@ -2084,7 +2293,10 @@
         <div class="product-card">
           <div class="product-image">
             <span class="product-tag">格萨尔王纹</span>
-            👑
+            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
+              <polygon points="14,3 16,10 23,10 17.5,14.5 19.5,21.5 14,17.5 8.5,21.5 10.5,14.5 5,10 12,10" stroke="#C9A962" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+              <polygon points="14,7 15.2,11 19.2,11 16.2,13.5 17.4,17.5 14,15 10.6,17.5 11.8,13.5 8.8,11 12.8,11" fill="#C9A962" opacity="0.3"/>
+            </svg>
           </div>
           <div class="product-info">
             <div class="product-name">格萨尔王纹收藏款</div>
@@ -2219,7 +2431,11 @@
   <div class="page shop-page" id="page-shop">
     <div class="shop-header">
       <div class="shop-search-box">
-        <span class="icon">🔍</span>
+        <span class="icon">
+        <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="#999" stroke-width="2">
+          <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
+        </svg>
+      </span>
         <span class="text">搜索锦带商品</span>
       </div>
     </div>
@@ -2227,19 +2443,48 @@
     <div class="category-nav">
       <div class="category-list">
         <div class="category-item active" onclick="switchShopCategory(this)">
-          <div class="category-icon">👔</div>
+          <div class="category-icon">
+          <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+            <path d="M8 8 Q14 5 20 8 L22 20 Q22 23 19 23 L9 23 Q6 23 6 20 Z" fill="white" opacity="0.85"/>
+            <path d="M11 23 L11 26" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M17 23 L17 26" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="10" y1="11" x2="18" y2="11" stroke="white" stroke-width="1.2" opacity="0.6"/>
+            <line x1="10" y1="14" x2="16" y2="14" stroke="white" stroke-width="1.2" opacity="0.5"/>
+          </svg>
+        </div>
           <span class="category-name">日常实用</span>
         </div>
         <div class="category-item" onclick="switchShopCategory(this)">
-          <div class="category-icon">🎁</div>
+          <div class="category-icon">
+            <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+              <rect x="5" y="11" width="18" height="13" rx="3" fill="white" opacity="0.85"/>
+              <rect x="9" y="7" width="10" height="6" rx="2" fill="white" opacity="0.5"/>
+              <line x1="5" y1="14" x2="23" y2="14" stroke="white" stroke-width="1"/>
+              <rect x="8" y="15" width="5" height="7" rx="1" fill="#9E2B25" opacity="0.5"/>
+              <rect x="15" y="15" width="5" height="7" rx="1" fill="#C9A962" opacity="0.7"/>
+            </svg>
+          </div>
           <span class="category-name">文创伴手</span>
         </div>
         <div class="category-item" onclick="switchShopCategory(this)">
-          <div class="category-icon">💎</div>
+          <div class="category-icon">
+            <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+              <polygon points="14,4 17,11 24,11 18.5,16 20.5,23 14,19 7.5,23 9.5,16 4,11 11,11" stroke="white" stroke-width="1.3" fill="white" opacity="0.2"/>
+            </svg>
+          </div>
           <span class="category-name">高端收藏</span>
         </div>
         <div class="category-item" onclick="switchShopCategory(this)">
-          <div class="category-icon">✨</div>
+          <div class="category-icon">
+            <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+              <rect x="1" y="11" width="26" height="6" rx="2" fill="white" opacity="0.85"/>
+              <rect x="4" y="12.5" width="5" height="3" rx="0.5" fill="#9E2B25" opacity="0.7"/>
+              <rect x="10" y="12.5" width="5" height="3" rx="0.5" fill="#C9A962" opacity="0.9"/>
+              <rect x="16" y="12.5" width="5" height="3" rx="0.5" fill="white" opacity="0.7"/>
+              <path d="M5 11 Q14 7 23 11" stroke="white" stroke-width="1" fill="none" opacity="0.5"/>
+              <path d="M5 17 Q14 21 23 17" stroke="white" stroke-width="1" fill="none" opacity="0.5"/>
+            </svg>
+          </div>
           <span class="category-name">定制成品</span>
         </div>
       </div>
@@ -2258,7 +2503,15 @@
         <div class="product-card">
           <div class="product-image">
             <span class="product-tag">彩虹纹</span>
-            🌈
+            <svg viewBox="0 0 40 20" width="40" height="20" fill="none">
+              <rect x="0" y="6" width="40" height="8" rx="2"/>
+              <rect x="0" y="6" width="40" height="4" rx="2" fill="white" opacity="0.3"/>
+              <rect x="0" y="7" width="8" height="6" fill="#9E2B25" opacity="0.85"/>
+              <rect x="8" y="7" width="8" height="6" fill="#C9A962" opacity="0.9"/>
+              <rect x="16" y="7" width="8" height="6" fill="#1D2B53" opacity="0.85"/>
+              <rect x="24" y="7" width="8" height="6" fill="#C9A962" opacity="0.9"/>
+              <rect x="32" y="7" width="8" height="6" fill="#9E2B25" opacity="0.85"/>
+            </svg>
           </div>
           <div class="product-info">
             <div class="product-name">经典彩虹纹锦带</div>
@@ -2271,7 +2524,13 @@
         <div class="product-card">
           <div class="product-image">
             <span class="product-tag">孔雀纹</span>
-            🦚
+            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
+              <ellipse cx="14" cy="22" rx="8" ry="3" fill="#9E2B25" opacity="0.15"/>
+              <path d="M14 6 Q18 10 14 14 Q10 18 6 14" stroke="#9E2B25" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              <line x1="10" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="18" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="14" cy="8" r="2" fill="#9E2B25" opacity="0.6"/>
+            </svg>
           </div>
           <div class="product-info">
             <div class="product-name">吉祥孔雀纹锦带</div>
@@ -2284,7 +2543,18 @@
         <div class="product-card">
           <div class="product-image">
             <span class="product-tag">达玛花纹</span>
-            ❀
+            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
+              <circle cx="14" cy="14" r="10" stroke="#C9A962" stroke-width="1.5" fill="none"/>
+              <circle cx="14" cy="14" r="5" fill="#C9A962" opacity="0.25"/>
+              <line x1="14" y1="4" x2="14" y2="9" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="14" y1="19" x2="14" y2="24" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="4" y1="14" x2="9" y2="14" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="19" y1="14" x2="24" y2="14" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="7" y1="7" x2="11" y2="11" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="17" y1="17" x2="21" y2="21" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="21" y1="7" x2="17" y2="11" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
+              <line x1="11" y1="17" x2="7" y2="21" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
           </div>
           <div class="product-info">
             <div class="product-name">达玛花纹商务锦带</div>
@@ -2297,7 +2567,12 @@
         <div class="product-card">
           <div class="product-image">
             <span class="product-tag">雪山纹</span>
-            🏔️
+            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
+              <polygon points="14,5 18,15 22,15 15,10 16,18 14,13 12,18 13,10 6,15 10,15" stroke="#1D2B53" stroke-width="1.3" fill="none"/>
+              <line x1="3" y1="20" x2="25" y2="20" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M5 20 Q8 23 11 20" stroke="#1D2B53" stroke-width="1" fill="none"/>
+              <path d="M17 20 Q20 23 23 20" stroke="#1D2B53" stroke-width="1" fill="none"/>
+            </svg>
           </div>
           <div class="product-info">
             <div class="product-name">雪山纹旅行款</div>
@@ -2330,19 +2605,44 @@
       <div class="culture-card">
         <div class="culture-image">
           <span class="culture-category">纹样文化</span>
-          🦚
+          <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+            <ellipse cx="14" cy="22" rx="8" ry="3" fill="white" opacity="0.15"/>
+            <path d="M14 6 Q18 10 14 14 Q10 18 6 14" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            <line x1="10" y1="18" x2="14" y2="22" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="18" y1="18" x2="14" y2="22" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="14" cy="8" r="2" fill="white" opacity="0.5"/>
+          </svg>
         </div>
         <div class="culture-content">
           <div class="culture-title">孔雀纹：藏域吉祥之象征</div>
           <div class="culture-summary">孔雀纹是藏域锦带中最具代表性的吉祥纹样之一，象征着吉祥富贵、美好幸福...</div>
           <div class="culture-footer">
             <div class="culture-stats">
-              <span class="stat-item">👁 1.2万</span>
-              <span class="stat-item">❤ 892</span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="#999" stroke-width="1.5">
+                  <circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5" fill="#999"/>
+                </svg>
+                1.2万
+              </span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z" fill="#9E2B25" opacity="0.7"/>
+                </svg>
+                892
+              </span>
             </div>
             <div class="culture-actions">
-              <span class="action-icon" onclick="toggleLike(this)">🤍</span>
-              <span class="action-icon">📤</span>
+              <span class="action-icon" onclick="toggleLike(this)">
+                <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#9E2B25" stroke-width="1.5">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z"/>
+                </svg>
+              </span>
+              <span class="action-icon">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#999" stroke-width="1.5">
+                  <path d="M2 12 L8 3 L14 12 Z" stroke-linejoin="round"/>
+                  <line x1="5" y1="9" x2="11" y2="9"/>
+                </svg>
+              </span>
             </div>
           </div>
         </div>
@@ -2351,19 +2651,45 @@
       <div class="culture-card">
         <div class="culture-image">
           <span class="culture-category">编织技艺</span>
-          🧵
+          <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+            <line x1="6" y1="9" x2="22" y2="9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="8" y1="13" x2="20" y2="13" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <line x1="10" y1="17" x2="18" y2="17" stroke="white" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+            <path d="M14 5 L14 9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M14 17 L14 23" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="14" cy="23" r="2" fill="white" opacity="0.5"/>
+          </svg>
         </div>
         <div class="culture-content">
           <div class="culture-title">千年编织技艺传承</div>
           <div class="culture-summary">藏域锦带的编织技艺已有千年历史，是藏族非物质文化遗产的重要组成部分...</div>
           <div class="culture-footer">
             <div class="culture-stats">
-              <span class="stat-item">👁 9876</span>
-              <span class="stat-item">❤ 654</span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="#999" stroke-width="1.5">
+                  <circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5" fill="#999"/>
+                </svg>
+                9876
+              </span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z" fill="#9E2B25" opacity="0.7"/>
+                </svg>
+                654
+              </span>
             </div>
             <div class="culture-actions">
-              <span class="action-icon" onclick="toggleLike(this)">🤍</span>
-              <span class="action-icon">📤</span>
+              <span class="action-icon" onclick="toggleLike(this)">
+                <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#9E2B25" stroke-width="1.5">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z"/>
+                </svg>
+              </span>
+              <span class="action-icon">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#999" stroke-width="1.5">
+                  <path d="M2 12 L8 3 L14 12 Z" stroke-linejoin="round"/>
+                  <line x1="5" y1="9" x2="11" y2="9"/>
+                </svg>
+              </span>
             </div>
           </div>
         </div>
@@ -2372,19 +2698,43 @@
       <div class="culture-card">
         <div class="culture-image">
           <span class="culture-category">非遗故事</span>
-          📜
+          <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+            <rect x="5" y="3" width="18" height="22" rx="2" fill="white" opacity="0.85"/>
+            <line x1="8" y1="9" x2="20" y2="9" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="8" y1="13" x2="18" y2="13" stroke="#1D2B53" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+            <line x1="8" y1="16" x2="15" y2="16" stroke="#1D2B53" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/>
+          </svg>
         </div>
         <div class="culture-content">
           <div class="culture-title">数字锦带创始人：达玛女神的故事</div>
           <div class="culture-summary">达玛女神是藏传佛教中的编织保护神，相传她传授了人类编织锦带的技术...</div>
           <div class="culture-footer">
             <div class="culture-stats">
-              <span class="stat-item">👁 1.5万</span>
-              <span class="stat-item">❤ 1203</span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="#999" stroke-width="1.5">
+                  <circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5" fill="#999"/>
+                </svg>
+                1.5万
+              </span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z" fill="#9E2B25" opacity="0.7"/>
+                </svg>
+                1203
+              </span>
             </div>
             <div class="culture-actions">
-              <span class="action-icon" onclick="toggleLike(this)">🤍</span>
-              <span class="action-icon">📤</span>
+              <span class="action-icon" onclick="toggleLike(this)">
+                <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#9E2B25" stroke-width="1.5">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z"/>
+                </svg>
+              </span>
+              <span class="action-icon">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#999" stroke-width="1.5">
+                  <path d="M2 12 L8 3 L14 12 Z" stroke-linejoin="round"/>
+                  <line x1="5" y1="9" x2="11" y2="9"/>
+                </svg>
+              </span>
             </div>
           </div>
         </div>
@@ -2393,19 +2743,49 @@
       <div class="culture-card">
         <div class="culture-image">
           <span class="culture-category">达玛女神IP</span>
-          ☸
+          <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+            <circle cx="14" cy="14" r="9" stroke="white" stroke-width="1.5" fill="none"/>
+            <circle cx="14" cy="14" r="4" fill="white" opacity="0.3"/>
+            <line x1="14" y1="5" x2="14" y2="10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="14" y1="18" x2="14" y2="23" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="5" y1="14" x2="10" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="18" y1="14" x2="23" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="8" y1="8" x2="11" y2="11" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="17" y1="17" x2="20" y2="20" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="20" y1="8" x2="17" y2="11" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="11" y1="17" x2="8" y2="20" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
         </div>
         <div class="culture-content">
           <div class="culture-title">达玛女神IP文化解读</div>
           <div class="culture-summary">达玛女神是数字锦带品牌的灵感来源，代表着传承与创新的完美融合...</div>
           <div class="culture-footer">
             <div class="culture-stats">
-              <span class="stat-item">👁 8765</span>
-              <span class="stat-item">❤ 543</span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="#999" stroke-width="1.5">
+                  <circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5" fill="#999"/>
+                </svg>
+                8765
+              </span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z" fill="#9E2B25" opacity="0.7"/>
+                </svg>
+                543
+              </span>
             </div>
             <div class="culture-actions">
-              <span class="action-icon" onclick="toggleLike(this)">🤍</span>
-              <span class="action-icon">📤</span>
+              <span class="action-icon" onclick="toggleLike(this)">
+                <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#9E2B25" stroke-width="1.5">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z"/>
+                </svg>
+              </span>
+              <span class="action-icon">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#999" stroke-width="1.5">
+                  <path d="M2 12 L8 3 L14 12 Z" stroke-linejoin="round"/>
+                  <line x1="5" y1="9" x2="11" y2="9"/>
+                </svg>
+              </span>
             </div>
           </div>
         </div>
@@ -2413,7 +2793,13 @@
     </div>
 
     <div class="quiz-entry" onclick="openQuizModal()">
-      <span class="quiz-icon">❓</span>
+      <span class="quiz-icon">
+        <svg viewBox="0 0 20 20" width="18" height="18" fill="none">
+          <circle cx="10" cy="10" r="8" stroke="#C9A962" stroke-width="1.5"/>
+          <line x1="10" y1="6" x2="10" y2="11" stroke="#C9A962" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="10" cy="14.5" r="1" fill="#C9A962"/>
+        </svg>
+      </span>
       <div class="quiz-text">
         <span class="quiz-title">非遗知识问答</span>
         <span class="quiz-desc">测试您的了解程度</span>
@@ -2426,7 +2812,12 @@
     <div class="profile-header">
       <div class="profile-bg"></div>
       <div class="profile-info">
-        <div class="avatar">👤</div>
+        <div class="avatar">
+          <svg viewBox="0 0 36 36" width="36" height="36" fill="none">
+            <circle cx="18" cy="13" r="7" fill="white" opacity="0.85"/>
+            <path d="M6 32 Q6 22 18 22 Q30 22 30 32" fill="white" opacity="0.7"/>
+          </svg>
+        </div>
         <div class="user-text">
           <div class="user-name">藏域之友</div>
           <div class="user-desc">会员ID: JD20240001</div>
@@ -2442,21 +2833,44 @@
       </div>
       <div class="order-tabs">
         <div class="order-tab">
-          <span class="icon">⏰</span>
+          <span class="icon">
+            <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+              <circle cx="10" cy="10" r="8" stroke="#9E2B25" stroke-width="1.5" fill="none"/>
+              <line x1="10" y1="6" x2="10" y2="10" stroke="#9E2B25" stroke-width="1.8" stroke-linecap="round"/>
+              <line x1="10" y1="10" x2="13" y2="12" stroke="#9E2B25" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
           <span class="text">待付款</span>
           <span class="badge">1</span>
         </div>
         <div class="order-tab">
-          <span class="icon">📦</span>
+          <span class="icon">
+            <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+              <rect x="3" y="7" width="14" height="10" rx="2" stroke="#9E2B25" stroke-width="1.5" fill="none"/>
+              <path d="M7 7 L7 4 Q10 2 13 4 L13 7" stroke="#9E2B25" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <line x1="3" y1="11" x2="17" y2="11" stroke="#9E2B25" stroke-width="1"/>
+            </svg>
+          </span>
           <span class="text">待发货</span>
         </div>
         <div class="order-tab">
-          <span class="icon">🚚</span>
+          <span class="icon">
+            <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+              <rect x="2" y="7" width="12" height="9" rx="1.5" stroke="#9E2B25" stroke-width="1.5" fill="none"/>
+              <path d="M14 10 L18 7 L18 16" stroke="#9E2B25" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <circle cx="6" cy="11.5" r="1.5" fill="#9E2B25" opacity="0.5"/>
+            </svg>
+          </span>
           <span class="text">待收货</span>
           <span class="badge">2</span>
         </div>
         <div class="order-tab">
-          <span class="icon">✅</span>
+          <span class="icon">
+            <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+              <circle cx="10" cy="10" r="7" stroke="#9E2B25" stroke-width="1.5" fill="none"/>
+              <path d="M6.5 10 L9 12.5 L13.5 7.5" stroke="#9E2B25" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
           <span class="text">已完成</span>
         </div>
       </div>
@@ -2464,7 +2878,15 @@
 
     <div class="profile-menu">
       <div class="menu-item">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(158, 43, 37, 0.15), rgba(158, 43, 37, 0.08));">🎗️</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(158, 43, 37, 0.15), rgba(158, 43, 37, 0.08));">
+          <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+            <rect x="1" y="11" width="26" height="6" rx="2" fill="#9E2B25" opacity="0.85"/>
+            <rect x="4" y="12.5" width="5" height="3" rx="0.5" fill="white" opacity="0.7"/>
+            <rect x="10" y="12.5" width="5" height="3" rx="0.5" fill="#C9A962" opacity="0.9"/>
+            <rect x="16" y="12.5" width="5" height="3" rx="0.5" fill="white" opacity="0.7"/>
+            <path d="M5 11 Q14 7 23 11" stroke="white" stroke-width="1" fill="none" opacity="0.5"/>
+          </svg>
+        </div>
         <div class="menu-content">
           <div class="menu-title">我的定制</div>
           <div class="menu-desc">查看保存的定制方案</div>
@@ -2472,7 +2894,11 @@
         <span class="menu-arrow">></span>
       </div>
       <div class="menu-item">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(201, 169, 98, 0.2), rgba(201, 169, 98, 0.1));">❤️</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(201, 169, 98, 0.2), rgba(201, 169, 98, 0.1));">
+          <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+            <path d="M14 22 Q8 17 8 13 Q8 10 10 10 Q12 10 14 12 Q16 10 18 10 Q20 10 20 13 Q20 17 14 22Z" fill="#9E2B25" opacity="0.75"/>
+          </svg>
+        </div>
         <div class="menu-content">
           <div class="menu-title">我的收藏</div>
           <div class="menu-desc">收藏的商品和科普内容</div>
@@ -2480,7 +2906,14 @@
         <span class="menu-arrow">></span>
       </div>
       <div class="menu-item">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(29, 43, 83, 0.15), rgba(29, 43, 83, 0.08));">📍</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(29, 43, 83, 0.15), rgba(29, 43, 83, 0.08));">
+          <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+            <circle cx="14" cy="13" r="5" stroke="#1D2B53" stroke-width="1.5" fill="none"/>
+            <line x1="14" y1="18" x2="14" y2="25" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="14" y1="25" x2="10" y2="21" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="14" y1="25" x2="18" y2="21" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div class="menu-content">
           <div class="menu-title">收货地址</div>
           <div class="menu-desc">管理收货信息</div>
@@ -2491,7 +2924,14 @@
 
     <div class="profile-menu">
       <div class="menu-item">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(29, 43, 83, 0.15), rgba(29, 43, 83, 0.08));">🏠</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(29, 43, 83, 0.15), rgba(29, 43, 83, 0.08));">
+          <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+            <path d="M14 4 L24 11 L24 22 Q24 24 22 24 L6 24 Q4 24 4 22 L4 11 Z" stroke="#1D2B53" stroke-width="1.5" fill="none"/>
+            <rect x="9" y="16" width="4" height="4" rx="0.5" fill="#1D2B53" opacity="0.5"/>
+            <rect x="15" y="16" width="4" height="4" rx="0.5" fill="#1D2B53" opacity="0.5"/>
+            <rect x="11" y="20" width="6" height="4" rx="1" fill="#1D2B53" opacity="0.4"/>
+          </svg>
+        </div>
         <div class="menu-content">
           <div class="menu-title">关于我们</div>
           <div class="menu-desc">了解数字锦带与非遗工坊</div>
@@ -2499,7 +2939,14 @@
         <span class="menu-arrow">></span>
       </div>
       <div class="menu-item">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(201, 169, 98, 0.2), rgba(201, 169, 98, 0.1));">💬</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(201, 169, 98, 0.2), rgba(201, 169, 98, 0.1));">
+          <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+            <path d="M5 8 Q5 5 8 5 L20 5 Q23 5 23 8 L23 17 Q23 20 20 20 L8 20 Q5 20 5 17 L5 8 Z" stroke="#C9A962" stroke-width="1.5" fill="none"/>
+            <line x1="8" y1="11" x2="20" y2="11" stroke="#C9A962" stroke-width="1.2" opacity="0.6"/>
+            <line x1="8" y1="15" x2="16" y2="15" stroke="#C9A962" stroke-width="1.2" opacity="0.4"/>
+            <circle cx="8" cy="20" r="3" fill="#C9A962" opacity="0.3"/>
+          </svg>
+        </div>
         <div class="menu-content">
           <div class="menu-title">意见反馈</div>
           <div class="menu-desc">您的建议是我们改进的动力</div>
@@ -2507,7 +2954,20 @@
         <span class="menu-arrow">></span>
       </div>
       <div class="menu-item">
-        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(102, 102, 102, 0.15), rgba(102, 102, 102, 0.08));">⚙️</div>
+        <div class="menu-icon" style="background: linear-gradient(135deg, rgba(102, 102, 102, 0.15), rgba(102, 102, 102, 0.08));">
+          <svg viewBox="0 0 28 28" width="22" height="22" fill="none">
+            <circle cx="14" cy="14" r="10" stroke="#666" stroke-width="1.5" fill="none"/>
+            <circle cx="14" cy="14" r="3" fill="#666" opacity="0.4"/>
+            <line x1="14" y1="4" x2="14" y2="7" stroke="#666" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="14" y1="21" x2="14" y2="24" stroke="#666" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="4" y1="14" x2="7" y2="14" stroke="#666" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="21" y1="14" x2="24" y2="14" stroke="#666" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="7" y1="7" x2="9.5" y2="9.5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="18.5" y1="18.5" x2="21" y2="21" stroke="#666" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="21" y1="7" x2="18.5" y2="9.5" stroke="#666" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="9.5" y1="18.5" x2="7" y2="21" stroke="#666" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div class="menu-content">
           <div class="menu-title">设置</div>
           <div class="menu-desc">账号与偏好设置</div>
@@ -2522,23 +2982,55 @@
   <!-- 底部导航 -->
   <div class="tab-bar">
     <div class="tab-item active" onclick="switchTab(this, 'home')">
-      <span class="icon">🏠</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <path d="M4 10 L12 3 L20 10 L20 21 L4 21 Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/>
+          <path d="M9 21 L9 14 L15 14 L15 21" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        </svg>
+      </span>
       <span class="text">首页</span>
     </div>
     <div class="tab-item" onclick="switchTab(this, 'custom')">
-      <span class="icon">🎗️</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <rect x="1" y="9" width="22" height="6" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <rect x="3.5" y="10.5" width="4" height="3" rx="0.5" fill="currentColor" opacity="0.5"/>
+          <rect x="8.5" y="10.5" width="4" height="3" rx="0.5" fill="currentColor" opacity="0.7"/>
+          <rect x="13.5" y="10.5" width="4" height="3" rx="0.5" fill="currentColor" opacity="0.5"/>
+          <rect x="18.5" y="10.5" width="2" height="3" rx="0.5" fill="currentColor" opacity="0.5"/>
+        </svg>
+      </span>
       <span class="text">定制</span>
     </div>
     <div class="tab-item" onclick="switchTab(this, 'shop')">
-      <span class="icon">🛍️</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <path d="M5 8 Q5 4 12 4 Q19 4 19 8 L20 20 Q20 22 18 22 L6 22 Q4 22 4 20 Z" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <path d="M9 22 L9 18 Q9 14 12 14 Q15 14 15 18 L15 22" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <circle cx="9.5" cy="11" r="1.5" fill="currentColor" opacity="0.5"/>
+          <circle cx="14.5" cy="11" r="1.5" fill="currentColor" opacity="0.5"/>
+        </svg>
+      </span>
       <span class="text">商城</span>
     </div>
     <div class="tab-item" onclick="switchTab(this, 'culture')">
-      <span class="icon">📜</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <rect x="4" y="2" width="16" height="20" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <line x1="7" y1="8" x2="17" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="7" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+          <line x1="7" y1="15" x2="13" y2="15" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.35"/>
+        </svg>
+      </span>
       <span class="text">科普</span>
     </div>
     <div class="tab-item" onclick="switchTab(this, 'profile')">
-      <span class="icon">👤</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
+          <circle cx="12" cy="9" r="4.5" stroke="currentColor" stroke-width="1.8" fill="none"/>
+          <path d="M4 21 Q4 16 12 16 Q20 16 20 21" stroke="currentColor" stroke-width="1.8" fill="none"/>
+        </svg>
+      </span>
       <span class="text">我的</span>
     </div>
   </div>
@@ -2611,16 +3103,28 @@
   </div>
 
   <script>
+    // 纹样 SVG 图标
+    const patternSVGs = {
+      1: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="M12 5 Q15.5 8.5 12 11.5 Q8.5 14.5 5 11.5" stroke="#9E2B25" stroke-width="1.5" fill="none" stroke-linecap="round"/><line x1="8.5" y1="14.5" x2="12" y2="18" stroke="#9E2B25" stroke-width="1.2" stroke-linecap="round"/><line x1="15.5" y1="14.5" x2="12" y2="18" stroke="#9E2B25" stroke-width="1.2" stroke-linecap="round"/><circle cx="12" cy="7" r="1.8" fill="#9E2B25" opacity="0.6"/></svg>`,
+      2: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><rect x="2" y="9" width="20" height="6" rx="1.5" fill="#9E2B25" opacity="0.3"/><rect x="2" y="10" width="5" height="4" rx="0.5" fill="#9E2B25" opacity="0.85"/><rect x="7" y="10" width="5" height="4" rx="0.5" fill="#C9A962" opacity="0.9"/><rect x="12" y="10" width="5" height="4" rx="0.5" fill="#1D2B53" opacity="0.85"/><rect x="17" y="10" width="5" height="4" rx="0.5" fill="#C9A962" opacity="0.9"/></svg>`,
+      3: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><circle cx="12" cy="12" r="9" stroke="#C9A962" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="4" fill="#C9A962" opacity="0.25"/><line x1="12" y1="3" x2="12" y2="8" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="16" x2="12" y2="21" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="12" x2="8" y2="12" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/><line x1="16" y1="12" x2="21" y2="12" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+      4: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><polygon points="12,3 14,9 20,9 15.5,13 17,19 12,15.5 7,19 8.5,13 4,9 10,9" stroke="#C9A962" stroke-width="1.3" fill="none" stroke-linejoin="round"/><polygon points="12,6.5 13.3,10 16.7,10 14,12.5 15,16 12,13.5 9,16 10,12.5 7.3,10 10.7,10" fill="#C9A962" opacity="0.25"/></svg>`,
+      5: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><path d="M4 13 Q6 9 9 11 Q12 7 15 10 Q18 6 21 11" stroke="#1D2B53" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M6 16 Q9 13 12 15 Q15 11 18 14" stroke="#1D2B53" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.5"/></svg>`,
+      6: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><polygon points="12,4 15.5,12 19,12 13,8 14.5,15 12,11 9.5,15 11,8 5,12 8.5,12" stroke="#1D2B53" stroke-width="1.3" fill="none"/><line x1="3" y1="17" x2="21" y2="17" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round"/></svg>`,
+      7: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><circle cx="12" cy="12" r="9" stroke="#9E2B25" stroke-width="1.5" fill="none"/><circle cx="12" cy="12" r="3.5" fill="#9E2B25" opacity="0.2"/><line x1="12" y1="3" x2="12" y2="8.5" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/><line x1="12" y1="15.5" x2="12" y2="21" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/><line x1="3" y1="12" x2="8.5" y2="12" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/><line x1="15.5" y1="12" x2="21" y2="12" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/><line x1="6.5" y1="6.5" x2="10" y2="10" stroke="#9E2B25" stroke-width="1.2" stroke-linecap="round"/><line x1="14" y1="14" x2="17.5" y2="17.5" stroke="#9E2B25" stroke-width="1.2" stroke-linecap="round"/><line x1="17.5" y1="6.5" x2="14" y2="10" stroke="#9E2B25" stroke-width="1.2" stroke-linecap="round"/><line x1="10" y1="14" x2="6.5" y2="17.5" stroke="#9E2B25" stroke-width="1.2" stroke-linecap="round"/></svg>`,
+      8: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><ellipse cx="12" cy="15" rx="7" ry="2.5" stroke="#C9A962" stroke-width="1" fill="none" opacity="0.5"/><path d="M12 4 Q16 7.5 12 10.5 Q8 13.5 5 11" stroke="#C9A962" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M12 4 Q16 7.5 12 10.5 Q8 13.5 5 11" stroke="white" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.4" transform="translate(1,1) scale(0.9)"/></svg>`
+    };
+
     // 纹样数据
     const patterns = [
-      { id: 1, name: '孔雀纹', category: '吉祥类', icon: '🦚', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
-      { id: 2, name: '彩虹纹', category: '自然类', icon: '🌈', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
-      { id: 3, name: '达玛花纹', category: '吉祥类', icon: '❀', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
-      { id: 4, name: '格萨尔王纹', category: '文化类', icon: '👑', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
-      { id: 5, name: '祥云纹', category: '吉祥类', icon: '☁️', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
-      { id: 6, name: '雪山纹', category: '自然类', icon: '🏔️', bgColor: 'linear-gradient(135deg, #F5FAFF, #E0F0FF)' },
-      { id: 7, name: '法轮纹', category: '文化类', icon: '☸️', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
-      { id: 8, name: '莲花纹', category: '吉祥类', icon: '🪷', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' }
+      { id: 1, name: '孔雀纹', category: '吉祥类', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 2, name: '彩虹纹', category: '自然类', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
+      { id: 3, name: '达玛花纹', category: '吉祥类', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 4, name: '格萨尔王纹', category: '文化类', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
+      { id: 5, name: '祥云纹', category: '吉祥类', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 6, name: '雪山纹', category: '自然类', bgColor: 'linear-gradient(135deg, #F5FAFF, #E0F0FF)' },
+      { id: 7, name: '法轮纹', category: '文化类', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 8, name: '莲花纹', category: '吉祥类', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' }
     ];
 
     let gridPatterns = [null, null, null, null, null, null, null, null, null];
@@ -2635,7 +3139,15 @@
       updatePrice();
     }
 
-    // 渲染九宫格
+    function ribbonCellHtml(index) {
+      const pattern = gridPatterns[index];
+      const icon = pattern ? patternSVGs[pattern.id] : '+';
+      const filledClass = pattern ? 'filled' : '';
+      const bgStyle = pattern ? 'background:' + pattern.bgColor + ';' : '';
+      return `<div class="ribbon-cell ${filledClass}" style="${bgStyle}" onclick="selectCell(${index})">${icon}</div>`;
+    }
+
+    // 渲染九宫格 + 实时预览（3×6：每行与编辑区一致，左右各复制一份无缝拼接）
     function renderGrid() {
       const gridCells = document.getElementById('grid-cells');
       const previewRibbon = document.getElementById('preview-ribbon');
@@ -2646,8 +3158,6 @@
       for (let i = 0; i < 9; i++) {
         const pattern = gridPatterns[i];
         const icon = pattern ? pattern.icon : '+';
-        const bgColor = pattern ? pattern.bgColor : '';
-        const filledClass = pattern ? 'filled' : '';
         const activeClass = selectedCell === i ? 'active' : '';
         
         gridHTML += `
@@ -2655,10 +3165,17 @@
             <div class="grid-cell-bg" style="${pattern ? 'background:' + pattern.bgColor + ';border:none;' : ''}">${icon}</div>
           </div>
         `;
-        
-        previewHTML += `
-          <div class="ribbon-cell ${filledClass}" style="${pattern ? 'background:' + pattern.bgColor.split(',')[1].replace(')', '').trim() + ';border:none;' : ''}" onclick="selectCell(${i})">${icon}</div>
-        `;
+      }
+
+      // 按列读：九宫格每一列从上到下作为 ribbon 一行，左右各复制一份 → 3×6
+      for (let col = 0; col < 3; col++) {
+        let rowHtml = '';
+        for (let pass = 0; pass < 2; pass++) {
+          for (let r = 0; r < 3; r++) {
+            rowHtml += ribbonCellHtml(r * 3 + col);
+          }
+        }
+        previewHTML += `<div class="ribbon-row">${rowHtml}</div>`;
       }
       
       gridCells.innerHTML = gridHTML;
@@ -2678,7 +3195,7 @@
       filtered.forEach(pattern => {
         html += `
           <div class="pattern-item" onclick="applyPattern(${pattern.id})">
-            <div class="pattern-icon" style="background: ${pattern.bgColor};">${pattern.icon}</div>
+            <div class="pattern-icon" style="background: ${pattern.bgColor};">${patternSVGs[pattern.id]}</div>
             <span class="pattern-name">${pattern.name}</span>
           </div>
         `;
@@ -2797,11 +3314,14 @@
 
     // 收藏
     function toggleLike(element) {
-      if (element.textContent === '🤍') {
-        element.textContent = '❤️';
-        alert('已收藏！');
+      const unfilled = `<svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#9E2B25" stroke-width="1.5"><path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z"/></svg>`;
+      const filled = `<svg viewBox="0 0 16 16" width="15" height="15" fill="#9E2B25"><path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z"/></svg>`;
+      const isFilled = element.innerHTML.includes('fill="#9E2B25"');
+      if (isFilled) {
+        element.innerHTML = unfilled;
       } else {
-        element.textContent = '🤍';
+        element.innerHTML = filled;
+        alert('已收藏！');
       }
     }
 
