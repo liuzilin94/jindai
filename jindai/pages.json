@@ -1,0 +1,55 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/custom/index",
+    "pages/shop/index",
+    "pages/culture/index",
+    "pages/profile/index",
+    "pages/product-detail/index",
+    "pages/order-confirm/index"
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "数字锦带",
+    "navigationBarBackgroundColor": "#F5F0E1",
+    "backgroundColor": "#F5F0E1"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#9E2B25",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "static/icons/home.png",
+        "selectedIconPath": "static/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/custom/index",
+        "text": "定制",
+        "iconPath": "static/icons/custom.png",
+        "selectedIconPath": "static/icons/custom-active.png"
+      },
+      {
+        "pagePath": "pages/shop/index",
+        "text": "商城",
+        "iconPath": "static/icons/shop.png",
+        "selectedIconPath": "static/icons/shop-active.png"
+      },
+      {
+        "pagePath": "pages/culture/index",
+        "text": "科普",
+        "iconPath": "static/icons/culture.png",
+        "selectedIconPath": "static/icons/culture-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "static/icons/profile.png",
+        "selectedIconPath": "static/icons/profile-active.png"
+      }
+    ]
+  }
+}
