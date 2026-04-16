@@ -121,56 +121,445 @@
 
     /* 底部导航 */
     .tab-bar {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 430px;
-      height: calc(82px + env(safe-area-inset-bottom, 0px));
-      background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-start;
-      padding-top: 10px;
-      padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
-      box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
-      z-index: 100;
-      border-top: 2px solid var(--gold);
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+      width: 430px !important;
+      height: 70px !important;
+      background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%) !important;
+      display: flex !important;
+      justify-content: space-around !important;
+      align-items: center !important;
+      padding: 0 10px !important;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.08) !important;
+      z-index: 99999 !important;
+      border-top: 2px solid var(--gold) !important;
     }
 
     .tab-bar::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--gold), var(--secondary));
+      display: none !important;
     }
 
     .tab-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      color: var(--text-muted);
-      cursor: pointer;
-      padding: 5px 15px;
-      line-height: 1;
-      transition: all 0.3s;
-      position: relative;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      color: var(--text-muted) !important;
+      cursor: pointer !important;
+      padding: 10px 20px !important;
+      line-height: 1.2 !important;
+      transition: all 0.3s !important;
+      position: relative !important;
+      min-width: 70px !important;
+      flex: 1 !important;
     }
 
-    .tab-item::before {
-      content: '';
-      position: absolute;
-      top: -8px;
-      left: 50%;
-      transform: translateX(-50%) scale(0);
-      width: 6px;
-      height: 6px;
-      background: var(--primary);
+    .tab-item:active {
+      opacity: 0.7;
+      transform: scale(0.95);
+    }
+
+    .tab-item.active {
+      color: var(--primary) !important;
+    }
+
+    .tab-item .icon {
+      margin-bottom: 4px !important;
+    }
+
+    .tab-item .text {
+      font-size: 11px !important;
+    }
+
+      padding-bottom: 100px;
+    }
+
+    .order-header {
+      padding: 20px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+    }
+
+    .order-header h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .order-header p {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .order-section {
+      margin: 15px;
+      background: white;
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .order-section-title {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .order-address {
+      display: flex;
+      gap: 12px;
+    }
+
+    .address-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
       border-radius: 50%;
-      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+    }
+
+    .address-info {
+      flex: 1;
+    }
+
+    .address-name {
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+
+    .address-phone {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .address-detail {
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .order-product {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .order-product:last-child {
+      border-bottom: none;
+    }
+
+    .order-product-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .order-product-info {
+      flex: 1;
+    }
+
+    .order-product-name {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .order-product-spec {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .order-product-right {
+      text-align: right;
+    }
+
+    .order-product-price {
+      font-size: 15px;
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .order-product-qty {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .order-form-item {
+      margin-bottom: 15px;
+    }
+
+    .order-form-item label {
+      font-size: 13px;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .order-form-item input,
+    .order-form-item select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 10px;
+    }
+
+    .payment-method {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #eee;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .payment-method.active {
+      border-color: var(--primary);
+      background: rgba(158, 43, 37, 0.05);
+      color: var(--primary);
+    }
+
+    .order-footer {
+      position: fixed;
+      bottom: 82px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 430px;
+      background: white;
+      padding: 15px 20px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 99998 !important;
+    }
+      align-items: center;
+    }
+
+    .order-total {
+      font-size: 14px;
+      color: var(--text);
+    }
+
+    .order-total span {
+      color: var(--primary);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .order-submit-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* ========== 订单成功页面 ========== */
+    .success-page {
+      text-align: center;
+      padding: 50px 20px;
+    }
+
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #4CAF50, #8BC34A);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 40px;
+      color: white;
+    }
+
+    .success-title {
+      font-size: 20px;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .success-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+    }
+
+    .success-order-id {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+    }
+
+    .success-btns {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .success-btn {
+      padding: 12px 25px;
+      border-radius: 25px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .success-btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+    }
+
+    .success-btn-outline {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    /* ========== 商品详情页 ========== */
+    .detail-page {
+      padding-bottom: 90px;
+    }
+
+    .detail-header {
+      padding: 20px;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .detail-header h2 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .back-btn {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .detail-product {
+      background: white;
+      margin: 15px;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .detail-product-img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+    }
+
+    .detail-product-info {
+      padding: 15px;
+    }
+
+    .detail-product-name {
+      font-size: 18px;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .detail-product-price {
+      font-size: 24px;
+      color: var(--primary);
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .detail-product-price span {
+      font-size: 14px;
+    }
+
+    .detail-product-sales {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .detail-desc {
+      background: white;
+      margin: 15px;
+      padding: 15px;
+      border-radius: 12px;
+    }
+
+    .detail-desc-title {
+      font-size: 15px;
+      color: var(--text);
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .detail-desc-content {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .detail-footer {
+      position: fixed;
+      bottom: 82px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 430px;
+      background: white;
+      padding: 12px 20px;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 12px;
+    }
+
+    .detail-service-btn {
+      background: #f5f5f5;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 20px;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+    }
+
+      flex: 1;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 25px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
     }
 
     .tab-item.active {
@@ -619,6 +1008,12 @@
         repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(201, 169, 98, 0.05) 10px, rgba(201, 169, 98, 0.05) 20px);
     }
 
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
     .product-tag {
       position: absolute;
       left: 0;
@@ -630,7 +1025,9 @@
       border-radius: 0 12px 12px 0;
       box-shadow: 0 2px 8px rgba(158, 43, 37, 0.3);
       letter-spacing: 1px;
+      z-index: 2;
     }
+
 
     .product-info {
       padding: 15px;
@@ -825,6 +1222,7 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      transform: rotate(90deg);
     }
 
     .ribbon-cell:hover {
@@ -1530,18 +1928,18 @@
     /* 问答入口 */
     .quiz-entry {
       position: fixed;
-      bottom: 80px;
+      bottom: 70px;
       right: 15px;
       display: flex;
       align-items: center;
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       color: #FFFFFF;
-      padding: 12px 18px;
+      padding: 10px 15px;
       border-radius: 25px;
       box-shadow: 0 4px 20px rgba(158, 43, 37, 0.4);
       cursor: pointer;
-      z-index: 50;
-      gap: 8px;
+      z-index: 9998 !important;
+      gap: 6px;
     }
 
     .quiz-icon {
@@ -2264,83 +2662,55 @@
         <span class="section-more" onclick="switchPage('shop')">更多 ></span>
       </div>
       <div class="product-grid">
-        <div class="product-card">
+        <div class="product-card" onclick="openProductDetail('彩虹纹锦带手环', 168, './src/static/images/产品/手环.png', 520, '彩虹纹寄托着舟曲人民对山河安澜、生活顺遂的美好祈愿。采用传统编织技艺，色彩鲜艳夺目，象征着吉祥与幸福。')">
           <div class="product-image">
-            <span class="product-tag">彩虹纹</span>
-            <svg viewBox="0 0 40 20" width="40" height="20" fill="none">
-              <rect x="0" y="6" width="40" height="8" rx="2"/>
-              <rect x="0" y="6" width="40" height="4" rx="2" fill="white" opacity="0.3"/>
-              <rect x="0" y="7" width="8" height="6" fill="#9E2B25" opacity="0.85"/>
-              <rect x="8" y="7" width="8" height="6" fill="#C9A962" opacity="0.9"/>
-              <rect x="16" y="7" width="8" height="6" fill="#1D2B53" opacity="0.85"/>
-              <rect x="24" y="7" width="8" height="6" fill="#C9A962" opacity="0.9"/>
-              <rect x="32" y="7" width="8" height="6" fill="#9E2B25" opacity="0.85"/>
-            </svg>
+            <span class="product-tag">锦带</span>
+            <img src="./src/static/images/产品/手环.png" alt="锦带产品">
           </div>
           <div class="product-info">
-            <div class="product-name">经典彩虹纹锦带</div>
+            <div class="product-name">彩虹纹锦带手环</div>
             <div class="product-bottom">
-              <span class="product-price">168</span>
+              <span class="product-price">¥168</span>
               <span class="product-sales">已售 520</span>
             </div>
           </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" onclick="openProductDetail('藏式冰箱贴', 28, './src/static/images/产品/冰箱贴.png', 380, '藏式冰箱贴采用传统锦带纹样制作，色彩鲜艳，是装饰家居的理想选择。每一枚都承载着藏族人民的祝福与美好寓意。')">
           <div class="product-image">
-            <span class="product-tag">孔雀纹</span>
-            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
-              <ellipse cx="14" cy="22" rx="8" ry="3" fill="#9E2B25" opacity="0.15"/>
-              <path d="M14 6 Q18 10 14 14 Q10 18 6 14" stroke="#9E2B25" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-              <line x1="10" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="18" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="14" cy="8" r="2" fill="#9E2B25" opacity="0.6"/>
-            </svg>
+            <span class="product-tag">锦带</span>
+            <img src="./src/static/images/产品/冰箱贴.png" alt="锦带产品">
           </div>
           <div class="product-info">
-            <div class="product-name">吉祥孔雀纹锦带</div>
+            <div class="product-name">藏式冰箱贴</div>
             <div class="product-bottom">
-              <span class="product-price">198</span>
+              <span class="product-price">¥28</span>
               <span class="product-sales">已售 380</span>
             </div>
           </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" onclick="openProductDetail('锦带纹书签', 38, './src/static/images/产品/书签.png', 256, '锦带纹书签将传统纹样与现代文具相结合，是阅读时光的美好伴侣。采用优质材料制作，兼具实用与收藏价值。')">
           <div class="product-image">
-            <span class="product-tag">达玛花纹</span>
-            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
-              <circle cx="14" cy="14" r="10" stroke="#C9A962" stroke-width="1.5" fill="none"/>
-              <circle cx="14" cy="14" r="5" fill="#C9A962" opacity="0.25"/>
-              <line x1="14" y1="4" x2="14" y2="9" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="14" y1="19" x2="14" y2="24" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="4" y1="14" x2="9" y2="14" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="19" y1="14" x2="24" y2="14" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="7" y1="7" x2="11" y2="11" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="17" y1="17" x2="21" y2="21" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="21" y1="7" x2="17" y2="11" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="11" y1="17" x2="7" y2="21" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
-            </svg>
+            <span class="product-tag">锦带</span>
+            <img src="./src/static/images/产品/书签.png" alt="锦带产品">
           </div>
           <div class="product-info">
-            <div class="product-name">达玛花纹商务锦带</div>
+            <div class="product-name">锦带纹书签</div>
             <div class="product-bottom">
-              <span class="product-price">288</span>
+              <span class="product-price">¥38</span>
               <span class="product-sales">已售 256</span>
             </div>
           </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" onclick="openProductDetail('藏式杯垫', 48, './src/static/images/产品/杯垫.jpg', 345, '藏式杯垫采用传统锦带纹样编织而成，色彩丰富饱满，既能保护桌面又有装饰作用。是日常生活中传递藏域文化的实用好物。')">
           <div class="product-image">
-            <span class="product-tag">格萨尔王纹</span>
-            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
-              <polygon points="14,3 16,10 23,10 17.5,14.5 19.5,21.5 14,17.5 8.5,21.5 10.5,14.5 5,10 12,10" stroke="#C9A962" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
-              <polygon points="14,7 15.2,11 19.2,11 16.2,13.5 17.4,17.5 14,15 10.6,17.5 11.8,13.5 8.8,11 12.8,11" fill="#C9A962" opacity="0.3"/>
-            </svg>
+            <span class="product-tag">锦带</span>
+            <img src="./src/static/images/产品/杯垫.jpg" alt="锦带产品">
           </div>
           <div class="product-info">
-            <div class="product-name">格萨尔王纹收藏款</div>
+            <div class="product-name">藏式杯垫</div>
             <div class="product-bottom">
-              <span class="product-price">598</span>
-              <span class="product-sales">已售 128</span>
+              <span class="product-price">¥48</span>
+              <span class="product-sales">已售 345</span>
             </div>
           </div>
         </div>
@@ -2389,9 +2759,9 @@
       
       <div class="category-tabs">
         <div class="category-tab active" data-category="all" onclick="filterPatterns('all')">全部</div>
-        <div class="category-tab" data-category="吉祥类" onclick="filterPatterns('吉祥类')">吉祥类</div>
-        <div class="category-tab" data-category="自然类" onclick="filterPatterns('自然类')">自然类</div>
-        <div class="category-tab" data-category="文化类" onclick="filterPatterns('文化类')">文化类</div>
+        <div class="category-tab" data-category="蓝白" onclick="filterPatterns('蓝白')">蓝白</div>
+        <div class="category-tab" data-category="红白" onclick="filterPatterns('红白')">红白</div>
+        <div class="category-tab" data-category="混合" onclick="filterPatterns('混合')">混合</div>
       </div>
 
       <div class="pattern-grid" id="pattern-grid">
@@ -2459,7 +2829,6 @@
       </div>
       <div class="action-buttons">
         <button class="btn btn-ghost" onclick="saveDesign()">保存</button>
-        <button class="btn btn-outline" onclick="addToCart()">加购</button>
         <button class="btn btn-primary" onclick="buyNow()">购买</button>
       </div>
     </div>
@@ -2538,84 +2907,54 @@
 
     <div class="product-list">
       <div class="product-grid">
-        <div class="product-card">
+        <div class="product-card" onclick="openProductDetail('彩虹纹锦带手环', 168, './src/static/images/产品/手环.png', 520, '彩虹纹寄托着舟曲人民对山河安澜、生活顺遂的美好祈愿。采用传统编织技艺，色彩鲜艳夺目，象征着吉祥与幸福。')">
           <div class="product-image">
-            <span class="product-tag">彩虹纹</span>
-            <svg viewBox="0 0 40 20" width="40" height="20" fill="none">
-              <rect x="0" y="6" width="40" height="8" rx="2"/>
-              <rect x="0" y="6" width="40" height="4" rx="2" fill="white" opacity="0.3"/>
-              <rect x="0" y="7" width="8" height="6" fill="#9E2B25" opacity="0.85"/>
-              <rect x="8" y="7" width="8" height="6" fill="#C9A962" opacity="0.9"/>
-              <rect x="16" y="7" width="8" height="6" fill="#1D2B53" opacity="0.85"/>
-              <rect x="24" y="7" width="8" height="6" fill="#C9A962" opacity="0.9"/>
-              <rect x="32" y="7" width="8" height="6" fill="#9E2B25" opacity="0.85"/>
-            </svg>
+            <span class="product-tag">锦带</span>
+            <img src="./src/static/images/产品/手环.png" alt="锦带产品">
           </div>
           <div class="product-info">
-            <div class="product-name">经典彩虹纹锦带</div>
+            <div class="product-name">彩虹纹锦带手环</div>
             <div class="product-bottom">
-              <span class="product-price">168</span>
+              <span class="product-price">¥168</span>
               <span class="product-sales">已售 520</span>
             </div>
           </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" onclick="openProductDetail('藏式冰箱贴', 28, './src/static/images/产品/冰箱贴.png', 380, '藏式冰箱贴采用传统锦带纹样制作，色彩鲜艳，是装饰家居的理想选择。每一枚都承载着藏族人民的祝福与美好寓意。')">
           <div class="product-image">
-            <span class="product-tag">孔雀纹</span>
-            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
-              <ellipse cx="14" cy="22" rx="8" ry="3" fill="#9E2B25" opacity="0.15"/>
-              <path d="M14 6 Q18 10 14 14 Q10 18 6 14" stroke="#9E2B25" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-              <line x1="10" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="18" y1="18" x2="14" y2="22" stroke="#9E2B25" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="14" cy="8" r="2" fill="#9E2B25" opacity="0.6"/>
-            </svg>
+            <span class="product-tag">锦带</span>
+            <img src="./src/static/images/产品/冰箱贴.png" alt="锦带产品">
           </div>
           <div class="product-info">
-            <div class="product-name">吉祥孔雀纹锦带</div>
+            <div class="product-name">藏式冰箱贴</div>
             <div class="product-bottom">
-              <span class="product-price">198</span>
+              <span class="product-price">¥28</span>
               <span class="product-sales">已售 380</span>
             </div>
           </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" onclick="openProductDetail('锦带纹书签', 38, './src/static/images/产品/书签.png', 256, '锦带纹书签将传统纹样与现代文具相结合，是阅读时光的美好伴侣。采用优质材料制作，兼具实用与收藏价值。')">
           <div class="product-image">
-            <span class="product-tag">达玛花纹</span>
-            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
-              <circle cx="14" cy="14" r="10" stroke="#C9A962" stroke-width="1.5" fill="none"/>
-              <circle cx="14" cy="14" r="5" fill="#C9A962" opacity="0.25"/>
-              <line x1="14" y1="4" x2="14" y2="9" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="14" y1="19" x2="14" y2="24" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="4" y1="14" x2="9" y2="14" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="19" y1="14" x2="24" y2="14" stroke="#C9A962" stroke-width="1.5" stroke-linecap="round"/>
-              <line x1="7" y1="7" x2="11" y2="11" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="17" y1="17" x2="21" y2="21" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="21" y1="7" x2="17" y2="11" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
-              <line x1="11" y1="17" x2="7" y2="21" stroke="#C9A962" stroke-width="1.2" stroke-linecap="round"/>
-            </svg>
+            <span class="product-tag">锦带</span>
+            <img src="./src/static/images/产品/书签.png" alt="锦带产品">
           </div>
           <div class="product-info">
-            <div class="product-name">达玛花纹商务锦带</div>
+            <div class="product-name">锦带纹书签</div>
             <div class="product-bottom">
-              <span class="product-price">288</span>
+              <span class="product-price">¥38</span>
               <span class="product-sales">已售 256</span>
             </div>
           </div>
         </div>
-        <div class="product-card">
+        <div class="product-card" onclick="openProductDetail('藏式杯垫', 48, './src/static/images/产品/杯垫.jpg', 345, '藏式杯垫采用传统锦带纹样编织而成，色彩丰富饱满，既能保护桌面又有装饰作用。是日常生活中传递藏域文化的实用好物。')">
           <div class="product-image">
-            <span class="product-tag">雪山纹</span>
-            <svg viewBox="0 0 28 28" width="28" height="28" fill="none">
-              <polygon points="14,5 18,15 22,15 15,10 16,18 14,13 12,18 13,10 6,15 10,15" stroke="#1D2B53" stroke-width="1.3" fill="none"/>
-              <line x1="3" y1="20" x2="25" y2="20" stroke="#1D2B53" stroke-width="1.5" stroke-linecap="round"/>
-              <path d="M5 20 Q8 23 11 20" stroke="#1D2B53" stroke-width="1" fill="none"/>
-              <path d="M17 20 Q20 23 23 20" stroke="#1D2B53" stroke-width="1" fill="none"/>
-            </svg>
+            <span class="product-tag">锦带</span>
+            <img src="./src/static/images/产品/杯垫.jpg" alt="锦带产品">
           </div>
           <div class="product-info">
-            <div class="product-name">雪山纹旅行款</div>
+            <div class="product-name">藏式杯垫</div>
             <div class="product-bottom">
-              <span class="product-price">188</span>
+              <span class="product-price">¥48</span>
               <span class="product-sales">已售 345</span>
             </div>
           </div>
@@ -2641,7 +2980,7 @@
 
     <div class="culture-list">
       <div class="culture-card">
-        <div class="culture-image">
+        <div class="culture-image" style="background: linear-gradient(135deg, #9E2B25, #C9A962);">
           <span class="culture-category">纹样文化</span>
           <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
             <ellipse cx="14" cy="22" rx="8" ry="3" fill="white" opacity="0.15"/>
@@ -2653,7 +2992,7 @@
         </div>
         <div class="culture-content">
           <div class="culture-title">孔雀纹：藏域吉祥之象征</div>
-          <div class="culture-summary">孔雀纹是藏域锦带中最具代表性的吉祥纹样之一，象征着吉祥富贵、美好幸福...</div>
+          <div class="culture-summary">孔雀纹是藏域锦带中最具代表性的吉祥纹样之一，象征着吉祥富贵、美好幸福。如孔雀纹寓意吉祥富贵，承载着藏族姑娘的定情信物文化...</div>
           <div class="culture-footer">
             <div class="culture-stats">
               <span class="stat-item">
@@ -2687,7 +3026,7 @@
       </div>
 
       <div class="culture-card">
-        <div class="culture-image">
+        <div class="culture-image" style="background: linear-gradient(135deg, #1D2B53, #C9A962);">
           <span class="culture-category">编织技艺</span>
           <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
             <line x1="6" y1="9" x2="22" y2="9" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
@@ -2699,8 +3038,8 @@
           </svg>
         </div>
         <div class="culture-content">
-          <div class="culture-title">千年编织技艺传承</div>
-          <div class="culture-summary">藏域锦带的编织技艺已有千年历史，是藏族非物质文化遗产的重要组成部分...</div>
+          <div class="culture-title">千年编织技艺：多民族融合的结晶</div>
+          <div class="culture-summary">舟曲锦带历史源远流长，技艺是古羌族、吐蕃、汉族等多民族文化交流融合的结晶。公元七八世纪吐蕃部落定居白龙江流域，将编织技术与当地羌族文化相融...</div>
           <div class="culture-footer">
             <div class="culture-stats">
               <span class="stat-item">
@@ -2734,7 +3073,7 @@
       </div>
 
       <div class="culture-card">
-        <div class="culture-image">
+        <div class="culture-image" style="background: linear-gradient(135deg, #C9A962, #9E2B25);">
           <span class="culture-category">非遗故事</span>
           <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
             <rect x="5" y="3" width="18" height="22" rx="2" fill="white" opacity="0.85"/>
@@ -2744,8 +3083,8 @@
           </svg>
         </div>
         <div class="culture-content">
-          <div class="culture-title">数字锦带创始人：达玛女神的故事</div>
-          <div class="culture-summary">达玛女神是藏传佛教中的编织保护神，相传她传授了人类编织锦带的技术...</div>
+          <div class="culture-title">格萨尔王传说：藏地史诗的具象表达</div>
+          <div class="culture-summary">格萨尔王传说、达玛女神故事更让每一款纹样都成为藏地史诗的具象表达。锦带不仅是实用品，更是节日庆典的精美饰品，承载着真挚的情感与美好祝愿...</div>
           <div class="culture-footer">
             <div class="culture-stats">
               <span class="stat-item">
@@ -2779,8 +3118,8 @@
       </div>
 
       <div class="culture-card">
-        <div class="culture-image">
-          <span class="culture-category">达玛女神IP</span>
+        <div class="culture-image" style="background: linear-gradient(135deg, #8B4513, #C9A962);">
+          <span class="culture-category">达玛女神</span>
           <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
             <circle cx="14" cy="14" r="9" stroke="white" stroke-width="1.5" fill="none"/>
             <circle cx="14" cy="14" r="4" fill="white" opacity="0.3"/>
@@ -2795,8 +3134,8 @@
           </svg>
         </div>
         <div class="culture-content">
-          <div class="culture-title">达玛女神IP文化解读</div>
-          <div class="culture-summary">达玛女神是数字锦带品牌的灵感来源，代表着传承与创新的完美融合...</div>
+          <div class="culture-title">达玛花纹：幸福安康的象征</div>
+          <div class="culture-summary">达玛花纹象征着幸福安康，源自藏传佛教文化，是数字锦带品牌的核心文化符号。达玛女神是藏传佛教中的编织保护神，传授了人类编织锦带的技术...</div>
           <div class="culture-footer">
             <div class="culture-stats">
               <span class="stat-item">
@@ -2810,6 +3149,97 @@
                   <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z" fill="#9E2B25" opacity="0.7"/>
                 </svg>
                 543
+              </span>
+            </div>
+            <div class="culture-actions">
+              <span class="action-icon" onclick="toggleLike(this)">
+                <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#9E2B25" stroke-width="1.5">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z"/>
+                </svg>
+              </span>
+              <span class="action-icon">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#999" stroke-width="1.5">
+                  <path d="M2 12 L8 3 L14 12 Z" stroke-linejoin="round"/>
+                  <line x1="5" y1="9" x2="11" y2="9"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="culture-card">
+        <div class="culture-image" style="background: linear-gradient(135deg, #2F4F4F, #C9A962);">
+          <span class="culture-category">舟曲地理</span>
+          <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+            <polygon points="14,4 18,14 22,14 15,9 16,18 14,13 12,18 13,9 6,14 10,14" stroke="white" stroke-width="1.3" fill="none" stroke-linejoin="round"/>
+            <line x1="3" y1="20" x2="25" y2="20" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M5 20 Q8 23 11 20" stroke="white" stroke-width="1" fill="none"/>
+            <path d="M17 20 Q20 23 23 20" stroke="white" stroke-width="1" fill="none"/>
+          </svg>
+        </div>
+        <div class="culture-content">
+          <div class="culture-title">白龙江流域：一山有四季的独特地理</div>
+          <div class="culture-summary">舟曲地处白龙江流域，"一山有四季，十里不同天"的独特地理环境孕育了独特的锦带文化。三国摩崖石洞等地域文化脉络融入锦带的色彩与纹样搭配中...</div>
+          <div class="culture-footer">
+            <div class="culture-stats">
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="#999" stroke-width="1.5">
+                  <circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5" fill="#999"/>
+                </svg>
+                7654
+              </span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z" fill="#9E2B25" opacity="0.7"/>
+                </svg>
+                432
+              </span>
+            </div>
+            <div class="culture-actions">
+              <span class="action-icon" onclick="toggleLike(this)">
+                <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="#9E2B25" stroke-width="1.5">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z"/>
+                </svg>
+              </span>
+              <span class="action-icon">
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="#999" stroke-width="1.5">
+                  <path d="M2 12 L8 3 L14 12 Z" stroke-linejoin="round"/>
+                  <line x1="5" y1="9" x2="11" y2="9"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="culture-card">
+        <div class="culture-image" style="background: linear-gradient(135deg, #9E2B25, #1D2B53);">
+          <span class="culture-category">彩虹纹</span>
+          <svg viewBox="0 0 28 28" width="24" height="24" fill="none">
+            <rect x="4" y="10" width="20" height="4" rx="2" fill="white" opacity="0.8"/>
+            <rect x="4" y="10" width="6" height="4" fill="#C9A962" opacity="0.7"/>
+            <rect x="10" y="10" width="5" height="4" fill="#9E2B25" opacity="0.8"/>
+            <rect x="15" y="10" width="4" height="4" fill="#1D2B53" opacity="0.8"/>
+            <rect x="19" y="10" width="5" height="4" fill="#C9A962" opacity="0.7"/>
+          </svg>
+        </div>
+        <div class="culture-content">
+          <div class="culture-title">彩虹纹：山河安澜的美好祈愿</div>
+          <div class="culture-summary">彩虹纹寄托着舟曲人民对山河安澜、生活顺遂的美好祈愿。文成公主进藏带去的内地纺织技术推动了锦带的发展，千年间不断丰富与传承...</div>
+          <div class="culture-footer">
+            <div class="culture-stats">
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none" stroke="#999" stroke-width="1.5">
+                  <circle cx="8" cy="8" r="6"/><circle cx="8" cy="8" r="2.5" fill="#999"/>
+                </svg>
+                6543
+              </span>
+              <span class="stat-item">
+                <svg viewBox="0 0 16 16" width="13" height="13" fill="none">
+                  <path d="M8 13 Q4 9 4 6.5 Q4 4 6 4 Q7.5 4 8 5.5 Q8.5 4 10 4 Q12 4 12 6.5 Q12 9 8 13Z" fill="#9E2B25" opacity="0.7"/>
+                </svg>
+                321
               </span>
             </div>
             <div class="culture-actions">
@@ -3018,7 +3448,7 @@
   </div>
 
   <!-- 底部导航 -->
-  <div class="tab-bar">
+  <div class="tab-bar" id="tab-bar">
     <div class="tab-item active" onclick="switchTab(this, 'home')">
       <span class="icon">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none">
@@ -3070,6 +3500,86 @@
         </svg>
       </span>
       <span class="text">我的</span>
+    </div>
+  </div>
+
+  <div class="page detail-page" id="page-detail" style="display:none;">
+    <div class="detail-header">
+      <span class="back-btn" onclick="goBackFromDetail()">←</span>
+      <h2>商品详情</h2>
+      <span></span>
+    </div>
+    <div class="detail-product">
+      <img class="detail-product-img" id="detail-img" src="" alt="">
+      <div class="detail-product-info">
+        <div class="detail-product-name" id="detail-name"></div>
+        <div class="detail-product-price">¥<span id="detail-price"></span></div>
+        <div class="detail-product-sales" id="detail-sales"></div>
+      </div>
+    </div>
+    <div class="detail-desc">
+      <div class="detail-desc-title">商品介绍</div>
+      <div class="detail-desc-content" id="detail-desc"></div>
+    </div>
+    <div class="detail-footer">
+      <button class="detail-buy-btn" onclick="detailBuyNow()">立即购买</button>
+    </div>
+  </div>
+
+  <!-- ========== 订单确认页面 ========== -->
+  <div class="page order-page" id="page-order" style="display:none;">
+    <div class="order-header">
+      <h2>📦 确认订单</h2>
+      <p>请核对订单信息并完成支付</p>
+    </div>
+    <div class="order-section">
+      <div class="order-section-title">📍 收货���址</div>
+      <div class="order-address">
+        <div class="address-icon">📍</div>
+        <div class="address-info">
+          <div class="address-name" id="order-name">李明</div>
+          <div class="address-phone" id="order-phone">138****8888</div>
+          <div class="address-detail" id="order-address">甘肃省甘南藏族自治州舟曲县...</div>
+        </div>
+      </div>
+    </div>
+    <div class="order-section">
+      <div class="order-section-title">🎁 订单商品</div>
+      <div id="order-products"></div>
+    </div>
+    <div class="order-section">
+      <div class="order-section-title">📝 备注信息</div>
+      <div class="order-form-item">
+        <label>买家留言</label>
+        <input type="text" id="order-remark" placeholder="选填，可备注颜色/尺寸等要求">
+      </div>
+    </div>
+    <div class="order-section">
+      <div class="order-section-title">💳 支付方式</div>
+      <div class="payment-methods">
+        <div class="payment-method active" onclick="selectPayment(this)">
+          <span>微信支付</span>
+        </div>
+        <div class="payment-method" onclick="selectPayment(this)">
+          <span>支付宝</span>
+        </div>
+      </div>
+    </div>
+    <div class="order-footer">
+      <div class="order-total">实付：<span id="order-total">¥0</span></div>
+      <button class="order-submit-btn" onclick="submitOrder()">提交订单</button>
+    </div>
+  </div>
+
+  <!-- ========== 订单成功页面 ========== -->
+  <div class="page success-page" id="page-success" style="display:none;">
+    <div class="success-icon">✓</div>
+    <div class="success-title">订单提交成功！</div>
+    <div class="success-desc">感谢您的购买，舟曲锦带将尽快送达</div>
+    <div class="success-order-id" id="success-order-id">订单号：DD20260324001</div>
+    <div class="success-btns">
+      <button class="success-btn success-btn-outline" onclick="viewOrder()">查看订单</button>
+      <button class="success-btn success-btn-primary" onclick="backToShop()">继续购物</button>
     </div>
   </div>
 
@@ -3153,26 +3663,82 @@
       8: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none"><ellipse cx="12" cy="15" rx="7" ry="2.5" stroke="#C9A962" stroke-width="1" fill="none" opacity="0.5"/><path d="M12 4 Q16 7.5 12 10.5 Q8 13.5 5 11" stroke="#C9A962" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M12 4 Q16 7.5 12 10.5 Q8 13.5 5 11" stroke="white" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.4" transform="translate(1,1) scale(0.9)"/></svg>`
     };
 
-    // 纹样图片（优先按 1.png / 2.png 命名）
+    // 纹样图片
     const patternImages = {
-      1: './src/static/patterns/1.png',
-      2: './src/static/patterns/2.png',
-      3: './src/static/patterns/3.png',
-      4: './src/static/patterns/4.png',
-      5: './src/static/patterns/5.png',
-      6: './src/static/patterns/6.png'
+      1: './src/static/images/花纹/混合/微信图片_20260415225709_26_1500.jpg',
+      2: './src/static/images/花纹/蓝白/微信图片_20260415225710_27_1500.jpg',
+      3: './src/static/images/花纹/混合/微信图片_20260415225711_28_1500.jpg',
+      4: './src/static/images/花纹/蓝白/微信图片_20260415225712_29_1500.jpg',
+      5: './src/static/images/花纹/蓝白/微信图片_20260415225712_30_1500.jpg',
+      6: './src/static/images/花纹/蓝白/微信图片_20260415225713_31_1500.jpg',
+      7: './src/static/images/花纹/蓝白/微信图片_20260415225714_32_1500.jpg',
+      8: './src/static/images/花纹/蓝白/微信图片_20260415225715_33_1500.jpg',
+      9: './src/static/images/花纹/蓝白/微信图片_20260415225716_34_1500.jpg',
+      10: './src/static/images/花纹/蓝白/微信图片_20260415225716_35_1500.jpg',
+      11: './src/static/images/花纹/蓝白/微信图片_20260415225717_36_1500.jpg',
+      12: './src/static/images/花纹/红白/微信图片_20260415225718_37_1500.jpg',
+      13: './src/static/images/花纹/红白/微信图片_20260415225719_38_1500.jpg',
+      14: './src/static/images/花纹/红白/微信图片_20260415225720_39_1500.jpg',
+      15: './src/static/images/花纹/红白/微信图片_20260415225721_40_1500.jpg',
+      16: './src/static/images/花纹/混合/微信图片_20260415225721_41_1500.jpg',
+      17: './src/static/images/花纹/红白/微信图片_20260415225722_42_1500.jpg',
+      18: './src/static/images/花纹/红白/微信图片_20260415225723_43_1500.jpg',
+      19: './src/static/images/花纹/混合/微信图片_20260415225724_44_1500.jpg',
+      20: './src/static/images/花纹/红白/微信图片_20260415225725_45_1500.jpg',
+      21: './src/static/images/花纹/红白/微信图片_20260415225726_46_1500.jpg',
+      22: './src/static/images/花纹/混合/微信图片_20260415225727_47_1500.jpg',
+      23: './src/static/images/花纹/混合/微信图片_20260415225727_48_1500.jpg',
+      24: './src/static/images/花纹/混合/微信图片_20260415225728_49_1500.jpg',
+      25: './src/static/images/花纹/混合/微信图片_20260415225729_50_1500.jpg',
+      26: './src/static/images/花纹/混合/微信图片_20260415225730_51_1500.jpg',
+      27: './src/static/images/花纹/混合/微信图片_20260415225731_52_1500.jpg',
+      28: './src/static/images/花纹/混合/微信图片_20260415225732_53_1500.jpg',
+      29: './src/static/images/花纹/混合/微信图片_20260415225733_54_1500.jpg',
+      30: './src/static/images/花纹/混合/微信图片_20260415225734_55_1500.jpg',
+      31: './src/static/images/花纹/混合/微信图片_20260415225734_56_1500.jpg',
+      32: './src/static/images/花纹/混合/微信图片_20260415225735_57_1500.jpg',
+      33: './src/static/images/花纹/混合/微信图片_20260415225736_58_1500.jpg',
+      34: './src/static/images/花纹/混合/微信图片_20260415225737_59_1500.jpg',
+      35: './src/static/images/花纹/混合/微信图片_20260415225738_60_1500.jpg'
     };
 
     // 纹样数据
     const patterns = [
-      { id: 1, name: '孔雀纹', category: '吉祥类', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
-      { id: 2, name: '彩虹纹', category: '自然类', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
-      { id: 3, name: '达玛花纹', category: '吉祥类', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
-      { id: 4, name: '格萨尔王纹', category: '文化类', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
-      { id: 5, name: '祥云纹', category: '吉祥类', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
-      { id: 6, name: '雪山纹', category: '自然类', bgColor: 'linear-gradient(135deg, #F5FAFF, #E0F0FF)' },
-      { id: 7, name: '法轮纹', category: '文化类', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
-      { id: 8, name: '莲花纹', category: '吉祥类', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' }
+      { id: 1, category: '混合', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 2, category: '蓝白', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
+      { id: 3, category: '混合', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 4, category: '蓝白', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
+      { id: 5, category: '蓝白', bgColor: 'linear-gradient(135deg, #F5FFF5, #E8FFE8)' },
+      { id: 6, category: '蓝白', bgColor: 'linear-gradient(135deg, #F5FAFF, #E0F0FF)' },
+      { id: 7, category: '蓝白', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 8, category: '蓝白', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
+      { id: 9, category: '蓝白', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 10, category: '蓝白', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
+      { id: 11, category: '蓝白', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 12, category: '红白', bgColor: 'linear-gradient(135deg, #F5FAFF, #E0F0FF)' },
+      { id: 13, category: '红白', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 14, category: '红白', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
+      { id: 15, category: '红白', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 16, category: '混合', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
+      { id: 17, category: '红白', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 18, category: '红白', bgColor: 'linear-gradient(135deg, #F5FAFF, #E0F0FF)' },
+      { id: 19, category: '混合', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 20, category: '红白', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
+      { id: 21, category: '红白', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 22, category: '混合', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
+      { id: 23, category: '混合', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 24, category: '混合', bgColor: 'linear-gradient(135deg, #F5FAFF, #E0F0FF)' },
+      { id: 25, category: '混合', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 26, category: '混合', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
+      { id: 27, category: '混合', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 28, category: '混合', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
+      { id: 29, category: '混合', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 30, category: '混合', bgColor: 'linear-gradient(135deg, #F5FAFF, #E0F0FF)' },
+      { id: 31, category: '混合', bgColor: 'linear-gradient(135deg, #FFF5F5, #FFE8E8)' },
+      { id: 32, category: '混合', bgColor: 'linear-gradient(135deg, #FFFEF5, #FFFDE0)' },
+      { id: 33, category: '混合', bgColor: 'linear-gradient(135deg, #F5F7FF, #E8EBFF)' },
+      { id: 34, category: '混合', bgColor: 'linear-gradient(135deg, #FFF9F5, #FFE8D8)' },
+      { id: 35, category: '混合', bgColor: 'linear-gradient(135deg, #F5FFF5, #E8FFE8)' }
     ];
 
     let gridPatterns = [null, null, null, null, null, null, null, null, null];
@@ -3202,7 +3768,7 @@
 
     function ribbonCellHtml(index) {
       const pattern = gridPatterns[index];
-      const icon = pattern ? patternVisualHtml(pattern.id, pattern.name) : '+';
+      const icon = pattern ? patternVisualHtml(pattern.id, '') : '+';
       const filledClass = pattern ? 'filled' : '';
       const bgStyle = pattern ? 'background:' + pattern.bgColor + ';' : '';
       return `<div class="ribbon-cell ${filledClass}" style="${bgStyle}" onclick="selectCell(${index})">${icon}</div>`;
@@ -3218,7 +3784,7 @@
       
       for (let i = 0; i < 9; i++) {
         const pattern = gridPatterns[i];
-        const icon = pattern ? patternVisualHtml(pattern.id, pattern.name) : '+';
+        const icon = pattern ? patternVisualHtml(pattern.id, '') : '+';
         const activeClass = selectedCell === i ? 'active' : '';
         
         gridHTML += `
@@ -3256,8 +3822,7 @@
       filtered.forEach(pattern => {
         html += `
           <div class="pattern-item" onclick="applyPattern(${pattern.id})">
-            <div class="pattern-icon" style="background: ${pattern.bgColor};">${patternVisualHtml(pattern.id, pattern.name)}</div>
-            <span class="pattern-name">${pattern.name}</span>
+            <div class="pattern-icon" style="background: ${pattern.bgColor};">${patternVisualHtml(pattern.id, '')}</div>
           </div>
         `;
       });
@@ -3341,20 +3906,35 @@
 
     // 页面切换
     function switchPage(page) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + page).classList.add('active');
-      
-      document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
-      document.querySelector(`.tab-item[onclick*="'${page}'"]`).classList.add('active');
-      
-      window.scrollTo(0, 0);
+      try {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        var targetPage = document.getElementById('page-' + page);
+        if (targetPage) {
+          targetPage.classList.add('active');
+        }
+
+        document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+        var targetTab = document.querySelector('.tab-item[onclick*="switchTab(this, \'' + page + '\')"]');
+        if (targetTab) {
+          targetTab.classList.add('active');
+        }
+
+        window.scrollTo(0, 0);
+      } catch(e) {
+        console.error('switchPage error:', e);
+      }
     }
 
     // 底部导航
     function switchTab(element, page) {
-      document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
-      element.classList.add('active');
-      switchPage(page);
+      console.log('switchTab called:', page);
+      try {
+        document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+        element.classList.add('active');
+        switchPage(page);
+      } catch(e) {
+        console.error('switchTab error:', e);
+      }
     }
 
     // 商城分类
@@ -3448,12 +4028,72 @@
       alert('定制方案已保存！');
     }
 
-    function addToCart() {
-      alert('已加入购物车！');
+    function buyNow() {
+      const name = document.getElementById('design-name').textContent || '锦带手环';
+      const price = parseInt(document.getElementById('total-price').textContent) || 168;
+      const img = document.querySelector('.preview-section img')?.src || './src/static/images/产品/手环.png';
+      
+      goToOrderDirect(name, price, img);
     }
 
-    function buyNow() {
-      alert('正在跳转订单确认页面...\n（这是演示版本）');
+    function submitOrder() {
+      const name = document.getElementById('order-name').textContent;
+      const phone = document.getElementById('order-phone').textContent;
+      const address = document.getElementById('order-address').textContent;
+      const remark = document.getElementById('order-remark').value;
+      const total = document.getElementById('order-total').textContent;
+      const orderId = 'DD' + new Date().getTime().toString().slice(-10);
+      
+      document.getElementById('success-order-id').textContent = '订单号：' + orderId;
+      switchPage('success');
+    }
+
+    function viewOrder() {
+      alert('订单详情功能开发中...');
+    }
+
+    function backToShop() {
+      switchPage('shop');
+    }
+
+    function openProductDetail(name, price, img, sales, desc) {
+      document.getElementById('detail-name').textContent = name;
+      document.getElementById('detail-price').textContent = price;
+      document.getElementById('detail-sales').textContent = '已售 ' + sales;
+      document.getElementById('detail-img').src = img;
+      document.getElementById('detail-desc').textContent = desc || '舟曲锦带是甘肃省省级非物质文化遗产，承载着千年藏羌文化。每一件产品都经过精心编织，体现了匠人的精湛技艺。';
+      currentDetailProduct = { name, price, img, sales, desc };
+      switchPage('detail');
+    }
+
+    let currentDetailProduct = null;
+
+    function goBackFromDetail() {
+      switchPage('shop');
+    }
+
+    function detailBuyNow() {
+      if (!currentDetailProduct) return;
+      goToOrderDirect(currentDetailProduct.name, currentDetailProduct.price, currentDetailProduct.img);
+    }
+
+    function goToOrderDirect(name, price, img) {
+      const html = `
+        <div class="order-product">
+          <img class="order-product-img" src="${img}" alt="${name}">
+          <div class="order-product-info">
+            <div class="order-product-name">${name}</div>
+            <div class="order-product-spec">标准款</div>
+          </div>
+          <div class="order-product-right">
+            <div class="order-product-price">¥${price}</div>
+            <div class="order-product-qty">x1</div>
+          </div>
+        </div>
+      `;
+      document.getElementById('order-products').innerHTML = html;
+      document.getElementById('order-total').textContent = '¥' + price;
+      switchPage('order');
     }
 
     // 启动
